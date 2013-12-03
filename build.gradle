@@ -16,33 +16,8 @@ allprojects {
         maven {
             url "file://${rootDir}/dependencies"
         }
-        maven {
-            credentials {
-                username nexusUser
-                password nexusPass
-            }
-            url "http://dev.x/nexus/content/groups/public"
-        }
         mavenLocal()
     }
-
-    uploadArchives {
-        /*repositories.mavenDeployer {
-            uniqueVersion = false
-            repository(url: "file://$uhome/.m2/repository")
-        }*/
-        repositories.mavenDeployer {
-            uniqueVersion = false
-            repository(url: "http://dev.x/nexus/content/repositories/releases") {
-                authentication(userName: nexusUser, password: nexusPass)
-            }
-            snapshotRepository(url: "file://$uhome/.m2/repository")
-            /*snapshotRepository(url: "http://dev.x/nexus/content/repositories/snapshots") {
-                authentication(userName: nexusUser, password: nexusPass)
-            }*/
-        }
-    }
-
 
     configurations {
         all*.exclude group: 'commons-logging', module: 'commons-logging'

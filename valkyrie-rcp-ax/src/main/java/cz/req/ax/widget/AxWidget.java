@@ -173,7 +173,7 @@ public abstract class AxWidget extends AbstractWidget {
 //        return null;
 //    }
 
-    public ProgressMonitor getProgressMonitor() {
+    public org.valkyriercp.progress.ProgressMonitor getProgressMonitor() {
         return getApplicationWindow().getStatusBar().getProgressMonitor();
     }
 

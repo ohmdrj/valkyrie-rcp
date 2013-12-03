@@ -18,6 +18,7 @@ package cz.req.ax.components;
 
 import com.jidesoft.swing.JideTabbedPane;
 import cz.req.ax.AxApplicationPage;
+import org.valkyriercp.application.*;
 import org.valkyriercp.util.EventListenerListHelper;
 
 import javax.swing.event.ChangeEvent;

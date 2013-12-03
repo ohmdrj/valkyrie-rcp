@@ -17,6 +17,7 @@
 package cz.req.ax.widget;
 
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.*;
 import cz.req.ax.AxApp;
 import cz.req.ax.widget.editor.AxAbstractEditor;
 import org.springframework.util.Assert;

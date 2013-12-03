@@ -18,6 +18,7 @@ package cz.req.ax;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import org.jdesktop.swingx.*;
 import org.jdesktop.swingx.icon.EmptyIcon;
 import org.jdesktop.swingx.painter.BusyPainter;
 import org.springframework.context.ApplicationContext;
@@ -37,21 +38,18 @@ import java.io.IOException;
 /**
  * @author Ondrej Burianek
  */
-public class AxSplashScreen extends AbstractSplashScreen implements MonitoringSplashScreen, ProgressMonitor, ApplicationContextAware {
+public class AxSplashScreen extends AbstractSplashScreen implements MonitoringSplashScreen, org.valkyriercp.progress.ProgressMonitor, ApplicationContextAware {
 
     ApplicationContext applicationContext;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
     private JXBusyLabel busyLabel = new JXBusyLabel(new Dimension(180, 180));
     private JXLabel titleLabel = new JXLabel("");
     private JProgressBar progressBar = new JProgressBar();
     private JXLabel progressLabel = new JXLabel();
     private JXFrame frame;
     private Resource image;
+    //    public ProgressMonitor getProgressMonitor() {
+//        return new ProgressMonitor() {
+    private int currentWork = 0;
 
     public AxSplashScreen() {
         BusyPainter painter = new BusyPainter(
@@ -76,13 +74,14 @@ public class AxSplashScreen extends AbstractSplashScreen implements MonitoringSp
     }
 
     @Override
-    public ProgressMonitor getProgressMonitor() {
-        return this;
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
-    //    public ProgressMonitor getProgressMonitor() {
-//        return new ProgressMonitor() {
-    private int currentWork = 0;
+    @Override
+    public org.valkyriercp.progress.ProgressMonitor getProgressMonitor() {
+        return this;
+    }
 
     @Override
     public void taskStarted(String name, int totalWork) {

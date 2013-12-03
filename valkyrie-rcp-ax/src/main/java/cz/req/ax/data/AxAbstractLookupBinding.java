@@ -17,6 +17,7 @@
 package cz.req.ax.data;
 
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.*;
 import cz.req.ax.AxApp;
 import cz.req.ax.widget.editor.AxEditorWidget;
 import org.springframework.util.Assert;
@@ -77,10 +78,6 @@ public abstract class AxAbstractLookupBinding extends CustomBinding {
      */
     public static final int AUTOPOPUPDIALOG_NO_UNIQUE_MATCH = AUTOPOPUPDIALOG_NO_MATCH + AUTOPOPUPDIALOG_MULTIPLE_MATCH;
     /**
-     * Internal mask used to determine the pop-up behavior.
-     */
-    private int autoPopupDialog = AUTOPOPUPDIALOG_NO_UNIQUE_MATCH;
-    /**
      * Standard on option to use with parameters.
      */
     public static final Boolean ON = Boolean.TRUE;
@@ -101,6 +98,14 @@ public abstract class AxAbstractLookupBinding extends CustomBinding {
      */
     private final AxEditorWidget dataEditor;
     /**
+     * Map of parameters to pass to the command, configuring its behavior.
+     */
+    private final Map<Object, Object> parameters;
+    /**
+     * Internal mask used to determine the pop-up behavior.
+     */
+    private int autoPopupDialog = AUTOPOPUPDIALOG_NO_UNIQUE_MATCH;
+    /**
      * Should changes be reverted when focus is lost and no value was selected?
      */
     private boolean revertValueOnFocusLost = true;
@@ -112,10 +117,6 @@ public abstract class AxAbstractLookupBinding extends CustomBinding {
      * Id to configure the dialog command.
      */
     private String selectDialogCommandId = DEFAULT_SELECTDIALOG_COMMAND_ID;
-    /**
-     * Map of parameters to pass to the command, configuring its behavior.
-     */
-    private final Map<Object, Object> parameters;
     /**
      * The button to access the dataEditor dialog.
      */
@@ -613,6 +614,54 @@ public abstract class AxAbstractLookupBinding extends CustomBinding {
         getValueModel().setValue(value);
     }
 
+    /**
+     * Returns the id used to configure the viewCommand.
+     */
+    public String getDataEditorViewCommandId() {
+        return dataEditorViewCommandId;
+    }
+
+    /**
+     * Set the id used to configure the viewCommand.
+     */
+    public void setDataEditorViewCommandId(String dataEditorViewCommandId) {
+        this.dataEditorViewCommandId = dataEditorViewCommandId;
+    }
+
+    /**
+     * Returns <code>true</code> if the viewCommand should be shown. Default value is <code>false</code>.
+     */
+    public boolean isEnableViewCommand() {
+        return enableViewCommand;
+    }
+
+    /**
+     * Enable the viewCommand that switches the view to the dataEditor of this referable.
+     */
+    public void setEnableViewCommand(boolean enableViewCommand) {
+        this.enableViewCommand = enableViewCommand;
+    }
+
+    public boolean isLoadDetailedObject() {
+        return loadDetailedObject;
+    }
+
+    public void setLoadDetailedObject(boolean loadDetailedObject) {
+        this.loadDetailedObject = loadDetailedObject;
+    }
+
+    public Object getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Object filter) {
+        this.filter = filter;
+    }
+
+    public Dimension getDialogSize() {
+        return null;
+    }
+
     private static class PropertyChangeMonitor extends JComponent {
 
         private static final long serialVersionUID = -5117792596024956433L;
@@ -626,74 +675,6 @@ public abstract class AxAbstractLookupBinding extends CustomBinding {
             }
             return proceedNotVetoed;
         }
-    }
-
-    private class ReferableDataEditorViewCommand extends ActionCommand {
-
-        private Object selectedObject;
-
-        ReferableDataEditorViewCommand() {
-            super("referableDataEditorViewCommand");
-            //MIG
-//            RcpSupport.configure(this);
-        }
-
-        public void setSelectedObject(Object selectedObject) {
-            this.selectedObject = selectedObject;
-        }
-
-        @Override
-        protected void doExecuteCommand() {
-            Assert.notNull(dataEditorViewCommandId);
-            //MIG
-            throw new UnsupportedOperationException();
-//            DataEditorWidgetViewCommand command = RcpSupport.getCommand(dataEditorViewCommandId);
-//            RcpSupport.executeViewDataEditorCommand(command, filter, selectedObject);
-        }
-    }
-
-    /**
-     * Set the id used to configure the viewCommand.
-     */
-    public void setDataEditorViewCommandId(String dataEditorViewCommandId) {
-        this.dataEditorViewCommandId = dataEditorViewCommandId;
-    }
-
-    /**
-     * Returns the id used to configure the viewCommand.
-     */
-    public String getDataEditorViewCommandId() {
-        return dataEditorViewCommandId;
-    }
-
-    /**
-     * Enable the viewCommand that switches the view to the dataEditor of this referable.
-     */
-    public void setEnableViewCommand(boolean enableViewCommand) {
-        this.enableViewCommand = enableViewCommand;
-    }
-
-    /**
-     * Returns <code>true</code> if the viewCommand should be shown. Default value is <code>false</code>.
-     */
-    public boolean isEnableViewCommand() {
-        return enableViewCommand;
-    }
-
-    public boolean isLoadDetailedObject() {
-        return loadDetailedObject;
-    }
-
-    public void setLoadDetailedObject(boolean loadDetailedObject) {
-        this.loadDetailedObject = loadDetailedObject;
-    }
-
-    public void setFilter(Object filter) {
-        this.filter = filter;
-    }
-
-    public Object getFilter() {
-        return filter;
     }
 
     /**
@@ -732,7 +713,27 @@ public abstract class AxAbstractLookupBinding extends CustomBinding {
         }
     }
 
-    public Dimension getDialogSize() {
-        return null;
+    private class ReferableDataEditorViewCommand extends ActionCommand {
+
+        private Object selectedObject;
+
+        ReferableDataEditorViewCommand() {
+            super("referableDataEditorViewCommand");
+            //MIG
+//            RcpSupport.configure(this);
+        }
+
+        public void setSelectedObject(Object selectedObject) {
+            this.selectedObject = selectedObject;
+        }
+
+        @Override
+        protected void doExecuteCommand() {
+            Assert.notNull(dataEditorViewCommandId);
+            //MIG
+            throw new UnsupportedOperationException();
+//            DataEditorWidgetViewCommand command = RcpSupport.getCommand(dataEditorViewCommandId);
+//            RcpSupport.executeViewDataEditorCommand(command, filter, selectedObject);
+        }
     }
 }
