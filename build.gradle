@@ -1,3 +1,4 @@
+def uhome = System.getProperty("user.home");
 def props = new Properties()
 file("dependencies.properties").withInputStream { props.load(it) }
 ext.dependencyVersions = new ConfigSlurper().parse(props)
@@ -5,17 +6,43 @@ ext.dependencyVersions = new ConfigSlurper().parse(props)
 allprojects {
     apply plugin: "java"
     apply plugin: "idea"
-    apply plugin: "eclipse"
+    apply plugin: "maven"
+    apply plugin: 'maven-publish'
 
-    group = "dk.navicon"
+    group = "cz.req.rcp"
     sourceCompatibility = 1.6
 
     repositories {
         maven {
             url "file://${rootDir}/dependencies"
         }
-        mavenCentral()
+        maven {
+            credentials {
+                username nexusUser
+                password nexusPass
+            }
+            url "http://dev.x/nexus/content/groups/public"
+        }
+        mavenLocal()
     }
+
+    uploadArchives {
+        /*repositories.mavenDeployer {
+            uniqueVersion = false
+            repository(url: "file://$uhome/.m2/repository")
+        }*/
+        repositories.mavenDeployer {
+            uniqueVersion = false
+            repository(url: "http://dev.x/nexus/content/repositories/releases") {
+                authentication(userName: nexusUser, password: nexusPass)
+            }
+            snapshotRepository(url: "file://$uhome/.m2/repository")
+            /*snapshotRepository(url: "http://dev.x/nexus/content/repositories/snapshots") {
+                authentication(userName: nexusUser, password: nexusPass)
+            }*/
+        }
+    }
+
 
     configurations {
         all*.exclude group: 'commons-logging', module: 'commons-logging'
@@ -95,7 +122,6 @@ project("valkyrie-rcp-core") {
         compile "com.miglayout:miglayout-swing:${dependencyVersions.miglayout}"
     }
 }
-
 project("valkyrie-rcp-integrations:valkyrie-rcp-jodatime") {
     dependencies {
         compile project(":valkyrie-rcp-core")
@@ -110,6 +136,24 @@ project("valkyrie-rcp-integrations:valkyrie-rcp-jideoss") {
     }
 }
 
+project("valkyrie-rcp-ax") {
+    dependencies {
+        compile project(":valkyrie-rcp-core")
+        compile project(":valkyrie-rcp-resources")
+        compile project(":valkyrie-rcp-integrations:valkyrie-rcp-jodatime")
+        compile "cz.thickset.utils:utils-core:3.3-SNAPSHOT"
+        compile "cz.thickset.utils:utils-secur:3.0"
+        compile "org.swinglabs:jxlayer:3.0.4"
+        compile "com.jidesoft:jide-oss:3.5.6"
+        compile "com.jgoodies:looks:2.2.0"
+        compile "com.jhlabs:filters:2.0.235"
+        compile "dom4j:dom4j:1.6.1"
+    }
+    task(run, dependsOn: 'classes', type: JavaExec) {
+        main = 'cz.thickset.desktop.sandbox.SandboxApplicationConfig'
+        classpath = sourceSets.main.runtimeClasspath
+    }
+}
 
 project("valkyrie-rcp-integrations:valkyrie-rcp-vldocking") {
     dependencies {

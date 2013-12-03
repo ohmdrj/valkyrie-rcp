@@ -4,9 +4,10 @@
 .classpath
 .project
 .settings
+.gradle
 .idea
+classes
 target
+build
 _*
 valkyrie-rcp-local
-build
-.gradle

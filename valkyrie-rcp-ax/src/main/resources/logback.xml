@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Thickset default logging configuration -->
+    <logger name="cz.thickset" level="INFO"/>
+    <logger name="cz.req.ax" level="WARN"/>
+    <logger name="org.valkyriercp" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.quartz" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="net.sf.ehcache" level="WARN"/>
+    <logger name="httpclient" level="WARN"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+            <!--<pattern>%-5level %logger{36} - %msg%n</pattern>-->
+            <pattern>%d %logger - %m%n%ex</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
