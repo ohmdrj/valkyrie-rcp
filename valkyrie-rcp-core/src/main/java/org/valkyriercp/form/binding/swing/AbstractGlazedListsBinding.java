@@ -445,6 +445,7 @@ public abstract class AbstractGlazedListsBinding extends AbstractCRUDBinding
             this.formDialog.setParentComponent(table.getComponent());
             getApplicationConfig().applicationObjectConfigurer().configure(this.formDialog, getDialogId());
         }
+        formDialog.setLocationRelativeTo(getApplicationConfig().windowManager().getActiveWindow().getControl());
         return this.formDialog;
     }
 
@@ -456,6 +457,7 @@ public abstract class AbstractGlazedListsBinding extends AbstractCRUDBinding
             this.detailFormDialog.setParentComponent(table.getComponent());
             getApplicationConfig().applicationObjectConfigurer().configure(this.detailFormDialog, getDialogId());
         }
+        formDialog.setLocationRelativeTo(getApplicationConfig().windowManager().getActiveWindow().getControl());
         return this.detailFormDialog;
     }
 

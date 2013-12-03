@@ -349,7 +349,9 @@ public class DefaultComponentFactory implements ComponentFactory, MessageSourceA
 	 */
 	protected void configureTextField(JTextField textField) {
 		textField.setColumns(getTextFieldColumns());
-	}
+        //Customize TextField
+        textField.setMargin(new Insets(3,3,3,3));
+    }
 
 	public JPasswordField createPasswordField() {
 		JPasswordField passwordField = new JPasswordField();

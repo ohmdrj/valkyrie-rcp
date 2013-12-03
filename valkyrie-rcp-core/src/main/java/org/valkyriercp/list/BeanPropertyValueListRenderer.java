@@ -29,6 +29,9 @@ public class BeanPropertyValueListRenderer extends TextValueListRenderer {
         if (value == null) {
             return "";
         }
+        if (propertyName.equals("") || propertyName.equals("*")) {
+            return value.toString();
+        }
         if (beanWrapper == null) {
             beanWrapper = new BeanWrapperImpl(value);
         } else {

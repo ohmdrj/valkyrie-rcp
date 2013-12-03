@@ -77,7 +77,9 @@ public class DefaultStatusBar extends AbstractControlFactory implements StatusBa
         this.message = message;
         if (errorMessage == null) {
             logger.debug("Setting status bar message to \"" + message + "\"");
-            messageLabel.setText(this.message);
+            if (messageLabel != null) {
+                messageLabel.setText(this.message);
+            }
         }
     }
 

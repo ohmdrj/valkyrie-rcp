@@ -64,6 +64,10 @@ public abstract class AbstractApplicationWindow implements ApplicationWindow, Wi
         return currentApplicationPage;
     }
 
+    public void setPage(ApplicationPage currentApplicationPage) {
+        this.currentApplicationPage = currentApplicationPage;
+    }
+    
     protected ApplicationLifecycleAdvisor getAdvisor() {
         return applicationConfig.applicationLifecycleAdvisor();
     }

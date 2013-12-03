@@ -396,7 +396,12 @@ public abstract class AbstractApplicationPage extends AbstractControlFactory imp
         if (viewDescriptorRegistry == null) {
             viewDescriptorRegistry = getApplicationConfig().viewDescriptorRegistry();
         }
-
+        //TODO Default set viewDescriptorRegistry has null applicationContext
+        try {
+            viewDescriptorRegistry.getViewDescriptors();
+        } catch (NullPointerException ex) {
+            ((BeanFactoryViewDescriptorRegistry) viewDescriptorRegistry).setApplicationContext(getApplicationConfig().applicationContext());
+        }
         return viewDescriptorRegistry;
     }
 

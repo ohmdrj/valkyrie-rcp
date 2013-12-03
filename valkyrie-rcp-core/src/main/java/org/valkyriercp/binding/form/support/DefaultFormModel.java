@@ -2,6 +2,7 @@ package org.valkyriercp.binding.form.support;
 
 import org.springframework.beans.PropertyAccessException;
 import org.springframework.binding.convert.ConversionException;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.valkyriercp.binding.MutablePropertyAccessStrategy;
@@ -393,8 +394,16 @@ public class DefaultFormModel extends AbstractFormModel implements ValidatingFor
 				clearBindingError(this);
 			}
 			catch (ConversionException ce) {
-				logger.warn("Conversion exception occurred setting value", ce);
-				raiseBindingError(this, value, ce);
+                String message = null;
+                if (ce.getCause() instanceof ConversionFailedException && ce.getCause().getCause() instanceof NumberFormatException) {
+                    message = ce.getCause().getCause().getMessage();
+                }
+                if (message == null) {
+                    logger.warn("Conversion exception occurred setting value", ce);
+                } else {
+                    logger.warn("Conversion exception occurred setting value: " + message);
+                }
+                raiseBindingError(this, value, ce);
 			}
 			catch (PropertyAccessException pae) {
 				logger.warn("Type Mismatch Exception occurred setting value", pae);
