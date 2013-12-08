@@ -1,83 +1,35 @@
-h1. Valkyrie RCP
+h1. Valkyrie RCP (zerem's fork)
+
+"Sources":https://github.com/zerem/Valkyrie-RCP
+
+h2. Introduction
  
-Valkyrie-RCP's mission is to provide an elegant way to build highly-configurable, GUI-standards-following rich-client applications faster by leveraging the Spring Framework, and a rich library of UI factories and support classes. Initial focus is on providing support for Swing applications but a goal of Valkyrie-RCP is to be view agnostic as much as possible.
+Valkyrie-RCP's mission is to provide an elegant way to build highly-configurable, GUI-standards-following rich-client applications faster by leveraging the Spring Framework, and a rich library of UI factories and support classes.
 
-The goal of Valkyrie-RPC is to provide a viable option for developers that need a platform and a best-practices guide for constructing Swing applications quickly.
+See "Valkyrie-RCP Origin":https://github.com/cmadsen/Valkyrie-RCP
 
-h2. DISCLAIMER
+Zerem's fork extends framework with module called AX (Another eXtension), with same goal as Valkyrie-RCP. The naming AX was chosen for lack of creativity (obviously) and for marking end-user classes... but gone hellishly wrong.
 
-I'm not the author of this framework, neither related to the author, so please thanks "lievendoclo":http://twitter.com/lievendoclo for his work.
+h2. Disclamer
 
-h2. What is it ?
+Original autor of this framework is "lievendoclo":http://twitter.com/lievendoclo. This fork is from contributor "cmadsen":https://github.com/cmadsen.
 
-A fork of "Valkyrie RCP":http://www.gitorious.org/valkyrie-rcp, which is itself an evolution of "Spring Rich Client":http://www.springsource.org/spring-rcp.
+This project is still Work-In-Progress, so API is expected to change heavily during development. Also I have to remove usage of own proprietary API.
 
-The Valkyrie documentation is available "here":http://cmadsen.github.com/Valkyrie-RCP/.
+h2. What's new?
 
+* Initial import of AX module
 
-h2. Why ?
+h2. What's due?
 
-Because the original project seems to be dead :(
+* Remove proprietary API (uncompilable sources)
 
+h2. Usage
 
-h2. And so, what's new ?
-
-* Updated dependency to Spring 3.2.4
-* Updated dependency to Spring Security 3.1.4
-* Fixed broken build for the manual
-* Released a 1.1 version available through maven central
-* Publish the "Valkyrie documentation":http://cmadsen.github.com/Valkyrie-RCP/
-
-
-h2. How to get the released versions ?
-
-h3. Maven
-
-Just add this to your @pom.xml@ file:
-
-The dependencies:
-
-bc. <dependency>
-    <groupId>dk.navicon</groupId>
-    <artifactId>valkyrie-rcp-core</artifactId>
-    <version>1.1</version>
-</dependency>
-
-
-h3. Gradle
-
-The dependencies:
-
-bc. dependencies {
+dependencies {
         compile group: 'dk.navicon', name:'valkyrie-rcp-core', version:'1.1'
 }
 
-h2. How do I get my IDE to work and run samples
+h1. Documentation
 
-h3. IntelliJ IDEA 12+
-
-Just run @gradle idea@ and import the project in IntelliJ.
-
-h2. I found a bug, what can I do ?
-
-Feel free to fork this repo, and make a "pull request":http://help.github.com/send-pull-requests/. Ideally, write a test !
-
-
-h2. How to build
-
-Just clone the repository, and then use a @mvn install@ command.
-The build was tested with "Maven 3.0.3":http://archive.apache.org/dist/maven/binaries/.
-
-If you're using gradle, use @gradle build@.
-
-h2. Documentation
-
-To build the documentation with gradle, you'll need to navigate to the valkyrie-rcp-manual folder and issue a @gradle reference@
-command. If you want a zip with the documentation, use @gradle build@.
-
-The documentation is provided as a single html, multi-page html and PDF.
-
-h2. Greetings
-
-Big thanks to "lievendoclo":http://twitter.com/lievendoclo for his work on this !
-
+h2. AxEditor
