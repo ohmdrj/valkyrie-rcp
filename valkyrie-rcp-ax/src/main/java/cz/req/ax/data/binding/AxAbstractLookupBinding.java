@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cz.req.ax.data;
+package cz.req.ax.data.binding;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.*;
@@ -47,6 +47,7 @@ import java.util.Map;
  * @author Ondrej Burianek
  * @see org.valkyriercp.form.binding.swing.editor.LookupBinding
  */
+//TODO @Deprecated?
 public abstract class AxAbstractLookupBinding extends CustomBinding {
 
     public static final String ON_ABOUT_TO_CHANGE = "on-about-to-change";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cz.req.ax.widget;
+package cz.req.ax.data.binding;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.*;
@@ -43,12 +43,12 @@ import java.util.Map;
 
 /**
  * Customized ValkyrieRCP
- *
+ * //BUG fix new AxEditor usage
  * @author Ondrej Burianek
  * @see org.valkyriercp.form.binding.swing.editor.LookupBinding
  */
 //TODO @Deprecated?
-public abstract class AxLookupBinding extends CustomBinding {
+public abstract class AxLookupEditorBinding extends CustomBinding {
 
     public static final String ON_ABOUT_TO_CHANGE = "on-about-to-change";
     /**
@@ -144,7 +144,7 @@ public abstract class AxLookupBinding extends CustomBinding {
     private boolean loadDetailedObject = false;
     private Object filter;
 
-    public AxLookupBinding(AxAbstractEditor dataWidget, FormModel formModel, String formPropertyPath) {
+    public AxLookupEditorBinding(AxAbstractEditor dataWidget, FormModel formModel, String formPropertyPath) {
         super(formModel, formPropertyPath, null);
         this.dataWidget = dataWidget;
         // a parameter hashMap with a key to not initialize the dataEditor anymore
@@ -288,7 +288,7 @@ public abstract class AxLookupBinding extends CustomBinding {
 
             @Override
             public synchronized void addVetoableChangeListener(VetoableChangeListener listener) {
-                AxLookupBinding.this.propertyChangeMonitor.addVetoableChangeListener(listener);
+                AxLookupEditorBinding.this.propertyChangeMonitor.addVetoableChangeListener(listener);
             }
 
             @Override
@@ -381,7 +381,7 @@ public abstract class AxLookupBinding extends CustomBinding {
             public void onTabKey(Component component) {
                 String textFieldValue = getKeyComponentText();
                 boolean empty = "".equals(textFieldValue.trim());
-                Object ref = AxLookupBinding.this.getValue();
+                Object ref = AxLookupEditorBinding.this.getValue();
                 // if something was filled in and it doesn't match the internal value
                 if (!empty && ((ref == null) || !textFieldValue.equals(getObjectLabel(ref)))) {
                     // call the dataEditor to fire the search
@@ -437,7 +437,7 @@ public abstract class AxLookupBinding extends CustomBinding {
             public void focusLost(FocusEvent e) {
                 String textFieldValue = getKeyComponentText();
                 boolean empty = "".equals(textFieldValue.trim());
-                Object ref = AxLookupBinding.this.getValue();
+                Object ref = AxLookupEditorBinding.this.getValue();
 
                 if (evaluateFocusLost(e)) {
                     // Revert if value isn't empty
@@ -445,7 +445,7 @@ public abstract class AxLookupBinding extends CustomBinding {
                         if (empty) {
                             getValueModel().setValue(null);
                         } else {
-                            valueModelChanged(AxLookupBinding.super.getValue());
+                            valueModelChanged(AxLookupEditorBinding.super.getValue());
                         }
                     } // Create new referable if value isn't empty
                     else {
@@ -538,7 +538,7 @@ public abstract class AxLookupBinding extends CustomBinding {
 
             @Override
             protected void doExecuteCommand() {
-                if (AxLookupBinding.this.propertyChangeMonitor.proceedOnChange()) {
+                if (AxLookupEditorBinding.this.propertyChangeMonitor.proceedOnChange()) {
                     if (dataEditorDialog == null) {
                         dataEditorDialog = new TitledWidgetApplicationDialog(getDataWidget(),
                                 TitledWidgetApplicationDialog.SELECT_CANCEL_MODE) {
@@ -546,7 +546,7 @@ public abstract class AxLookupBinding extends CustomBinding {
                             @Override
                             protected boolean onFinish() {
                                 if (getWidget().canClose()) {
-                                    return AxLookupBinding.this.onFinish();
+                                    return AxLookupEditorBinding.this.onFinish();
                                 }
                                 return false;
                             }

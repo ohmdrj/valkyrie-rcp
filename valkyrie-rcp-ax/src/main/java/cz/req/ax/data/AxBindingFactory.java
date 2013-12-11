@@ -37,8 +37,8 @@ public class AxBindingFactory extends SwingBindingFactory {
         DefaultFormModel x = (DefaultFormModel) formModel;
     }
 
-    //    public TableLookupBoxBinding bindTableLookupBox(String formProperty, String renderedProperty, Closure selectableItemsRetriever) {
-//        TableLookupBoxBinding binding = new TableLookupBoxBinding(getFormModel(), formProperty);
+    //    public AxLookupBoxBinding bindTableLookupBox(String formProperty, String renderedProperty, Closure selectableItemsRetriever) {
+//        AxLookupBoxBinding binding = new AxLookupBoxBinding(getFormModel(), formProperty);
 //
 //        return binding;
 //    }

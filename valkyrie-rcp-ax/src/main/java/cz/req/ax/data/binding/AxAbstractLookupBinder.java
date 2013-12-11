@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cz.req.ax.data;
+package cz.req.ax.data.binding;
 
 import cz.req.ax.AxApp;
 import cz.req.ax.widget.editor.AxEditorWidget;
@@ -33,6 +33,7 @@ import java.util.Map;
  * @author Ondrej Burianek
  * @see org.valkyriercp.form.binding.swing.editor.LookupBinder
  */
+//TODO @Deprecated?
 @Configurable
 public abstract class AxAbstractLookupBinder implements Binder {
 

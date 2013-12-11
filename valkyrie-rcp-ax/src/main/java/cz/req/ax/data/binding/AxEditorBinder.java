@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cz.req.ax.data;
+package cz.req.ax.data.binding;
 
 import cz.req.ax.widget.editor.AxEditorWidget;
 import org.valkyriercp.binding.form.FormModel;
@@ -27,6 +27,7 @@ import java.util.Map;
 /**
  * @author Ondrej Burianek
  */
+//TODO @Deprecated?
 public class AxEditorBinder extends AxAbstractLookupBinder {
 
     protected AxEditorWidget dataEditor;

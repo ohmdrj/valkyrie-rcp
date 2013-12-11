@@ -50,8 +50,8 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
     @Bean
     public PageDescriptor naviPage() {
         AxApplicationNaviPageDescriptor pageDescriptor = new AxApplicationNaviPageDescriptor();
-        pageDescriptor.addGroup("Edit").addView(testEditor());
-        pageDescriptor.addGroup("Test").addView(testView1(), testView2(), testWidget());
+        pageDescriptor.addGroup("Forms").addView(testEditor(),testAutocomplete());
+        pageDescriptor.addGroup("Autowire").addView(testView1(), testView2(), testWidget());
         //pageDescriptor.addGroup("Login").addView(loginView());
         pageDescriptor.setViewDescriptor(testEditor());
         return pageDescriptor;
@@ -60,6 +60,11 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
     @Bean
     public ViewDescriptor testEditor() {
         return new AxViewDescriptor("testEditor", new SandboxEditor());
+    }
+
+    @Bean
+    public ViewDescriptor testAutocomplete() {
+        return new AxViewDescriptor("testAutocomplete", new SandboxAutocomleteCombobox());
     }
 
     @Bean
@@ -100,8 +105,8 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
     @Override
     protected void registerBinders(BinderSelectionStrategy binderSelectionStrategy) {
         super.registerBinders(binderSelectionStrategy);
-        binderSelectionStrategy.registerBinderForPropertyType(SandboxTestEnum.class, enumerationBinder());
-        binderSelectionStrategy.registerBinderForPropertyType(SandboxEditor.TestEnum.class, enumerationBinder());
+        binderSelectionStrategy.registerBinderForPropertyType(TestEnum2.class, enumerationBinder());
+        binderSelectionStrategy.registerBinderForPropertyType(TestEnum1.class, enumerationBinder());
     }
 
     @Bean

@@ -16,45 +16,70 @@
 
 package cz.req.ax.widget.table;
 
+import cz.req.ax.data.AxDataProvider;
 import cz.req.ax.data.RefreshListener;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.support.PropertyComparator;
 import org.valkyriercp.binding.form.FormModel;
 import org.valkyriercp.form.binding.swing.ComboBoxBinding;
-import org.valkyriercp.list.BeanPropertyValueComboBoxEditor;
 import org.valkyriercp.list.BeanPropertyValueListRenderer;
 
 import javax.swing.*;
 
 /**
- * TableLookupBoxBinding
+ * TableLookupBinding
+ * 2 variants: ComboBox, AutoComplete
  *
  * @author Ondrej Burianek
  */
-public class TableLookupBoxBinding extends ComboBoxBinding implements RefreshListener {
 
-    AxTableDataProvider dataProvider;
+public class AxLookupBoxBinding extends ComboBoxBinding implements RefreshListener {
+
+    AxDataProvider dataProvider;
     TableLookupBoxAdapter tableLookupAdapter;
     TableLookupBox tableLookupBox;
-    String fieldPropertyPath;
+    String propertyPath;
 
-    public TableLookupBoxBinding(FormModel formModel, String formPropertyPath, String fieldPropertyPath, AxTableDataProvider dataProvider) {
+    public AxLookupBoxBinding(FormModel formModel, String formPropertyPath, String fieldPropertyPath, AxDataProvider dataProvider) {
         super(new JComboBox(), formModel, formPropertyPath, null);
-        this.fieldPropertyPath = fieldPropertyPath;
+        this.propertyPath = fieldPropertyPath;
         this.dataProvider = dataProvider;
 
         setRenderer(new BeanPropertyValueListRenderer(fieldPropertyPath));
-        setEditor(new BeanPropertyValueComboBoxEditor(getEditor(), fieldPropertyPath));
+        //setEditor(new BeanPropertyValueComboBoxEditor(getEditor(), propertyPath));
         setComparator(new PropertyComparator(fieldPropertyPath, true, true));
+    }
+
+    protected ObjectToStringConverter createStringConverter() {
+        return  new ObjectToStringConverter() {
+            final BeanWrapperImpl beanWrapper = new BeanWrapperImpl();
+
+            @Override
+            public String getPreferredStringForItem(Object item) {
+                if (item == null) {
+                    return null;
+                }
+                if (propertyPath == null || propertyPath.equals("*")) {
+                    return String.valueOf(item);
+                }
+                beanWrapper.setWrappedInstance(item);
+                Object propertyValue = beanWrapper.getPropertyValue(propertyPath);
+                return String.valueOf(propertyValue);
+            }
+        };
     }
 
     @Override
     public JComponent getComponent() {
         if (tableLookupBox == null) {
             JComboBox comboBox = (JComboBox) super.getComponent();
+            AutoCompleteDecorator.decorate(comboBox, createStringConverter());
             tableLookupBox = new TableLookupBox(comboBox);
             tableLookupAdapter = new TableLookupBoxAdapter(tableLookupBox, dataProvider, getValueModel());
+            tableLookupAdapter.getTableDescription().add(propertyPath);
             refresh();
-
         }
         return tableLookupBox;
     }
@@ -66,9 +91,6 @@ public class TableLookupBoxBinding extends ComboBoxBinding implements RefreshLis
         return comboBox;
     }
 
-    //    public final void setTableDataProvider(AxTableDataProvider tableDataProvider) {
-//        tableLookupAdapter.setDataProvider(tableDataProvider);
-//    }
     @Override
     public void refresh() {
         if (dataProvider != null) {

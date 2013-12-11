@@ -100,7 +100,7 @@ public class AxAbstractEditor<M extends AxAbstractMaster, D extends AxAbstractDe
     }
 
     public Object setSelectedSearch(Object criteria) {
-        // filterField leegmaken
+        // filterField
         master.clearFilter();
 
 //        if (criteria == null) {

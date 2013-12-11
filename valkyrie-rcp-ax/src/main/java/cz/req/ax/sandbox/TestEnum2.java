@@ -14,31 +14,23 @@
  * limitations under the License.
  */
 
-package cz.req.ax.widget.table;
-
-import cz.req.ax.data.AxDataProvider;
+package cz.req.ax.sandbox;
 
 /**
- * AxTableDataProvider
- *
  * @author Ondrej Burianek
  */
-@Deprecated
-public abstract class AxTableDataProvider extends AxDataProvider {
+public class TestEnum2 {
 
-    AxTableDescription tableDescription;
+    String value;
 
-    public AxTableDataProvider(Class dataIdentityClass) {
-        super(dataIdentityClass);
-        tableDescription = new AxTableDescription(this);
-        //TODO Faulty design
-        intTableDescription(tableDescription);
+    public TestEnum2() {
     }
 
-    public AxTableDescription getTableDescription() {
-        return tableDescription;
+    public TestEnum2(String value) {
+        this.value = value;
     }
 
-    public void intTableDescription(AxTableDescription tableDescription) {
+    public String getValue() {
+        return value;
     }
 }

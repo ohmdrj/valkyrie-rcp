@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2013 Ondrej Burianek.
+ * Copyright 2009-2013 Ondřej Buránek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +17,11 @@
 package cz.req.ax.sandbox;
 
 /**
- * @author Ondrej Burianek
- */
-public class SandboxTestEnum {
+* TestEnum1
+*
+* @author Ondrej Burianek
+*/
+public enum TestEnum1 {
+    Foo, Bar, Ass
 
-    String value;
-
-    public SandboxTestEnum() {
-    }
-
-    public SandboxTestEnum(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

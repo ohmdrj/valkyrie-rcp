@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package cz.req.ax.widget.table;
+package cz.req.ax.data.binding;
 
 import cz.req.ax.data.RefreshListener;
+import cz.req.ax.widget.table.AxTableDescription;
 import org.valkyriercp.binding.form.FormModel;
 import org.valkyriercp.form.binding.swing.AbstractGlazedListsBinding;
 import org.valkyriercp.widget.table.TableDescription;
@@ -26,6 +27,7 @@ import org.valkyriercp.widget.table.TableDescription;
  *
  * @author Ondrej Burianek
  */
+//TODO @Deprecated?
 public class AxTableBinding extends AbstractGlazedListsBinding implements RefreshListener {
 
     AxTableDescription tableDescription;
@@ -40,9 +42,6 @@ public class AxTableBinding extends AbstractGlazedListsBinding implements Refres
         this.tableDescription = tableDescription;
     }
 
-    //    public AxTableBinding(FormModel formModel, String formPropertyPath, boolean useOriginalSortOrder) {
-//        super(formModel, formPropertyPath, useOriginalSortOrder);
-//    }
     @Override
     public void refresh() {
         listChanged();

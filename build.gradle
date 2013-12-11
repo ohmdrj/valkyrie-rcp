@@ -169,8 +169,12 @@ project("valkyrie-rcp-samples:valkyrie-rcp-dataeditor-sample") {
         compile project(":valkyrie-rcp-core")
         compile project(":valkyrie-rcp-integrations:valkyrie-rcp-jideoss")
         compile "com.jgoodies:jgoodies-looks:${dependencyVersions.jgoodies.looks}"
-        compile "com.github.insubstantial:substance:${dependencyVersions.substance}"
-        compile "com.github.insubstantial:substance-swingx:${dependencyVersions.substance}"
+        /*compile "com.github.insubstantial:substance:${dependencyVersions.substance}" {
+            exclude module: "org.swinglabs.swingx:swingx-core"
+        }
+        compile "com.github.insubstantial:substance-swingx:${dependencyVersions.substance}" {
+            exclude module: "org.swinglabs.swingx:swingx-core"
+        }*/
     }
 
     task(runSample, dependsOn: 'classes', type: JavaExec) {

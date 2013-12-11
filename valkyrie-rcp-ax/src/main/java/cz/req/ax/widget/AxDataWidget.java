@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cz.req.ax.widget;
 
 import cz.req.ax.data.*;
-import cz.req.ax.data.DataFactory;
 import cz.req.ax.support.SharedCommandsAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
@@ -42,15 +40,6 @@ public abstract class AxDataWidget extends AxWidget
     private Object filterCriteria;
     private RefreshAdapter refreshAdapter;
 
-    public Object getFilterCriteria() {
-        return filterCriteria;
-    }
-
-    public void setFilterCriteria(Object filterCriteria) {
-        this.filterCriteria = filterCriteria;
-
-    }
-
     public AxDataWidget() {
         refreshAdapter = new RefreshAdapter();
         refreshAdapter.addRefreshListener(this);
@@ -70,6 +59,15 @@ public abstract class AxDataWidget extends AxWidget
         this();
         this.dataProvider = dataProvider;
         this.sharedCommands = sharedCommands;
+    }
+
+    public Object getFilterCriteria() {
+        return filterCriteria;
+    }
+
+    public void setFilterCriteria(Object filterCriteria) {
+        this.filterCriteria = filterCriteria;
+
     }
 
     @Override
@@ -100,14 +98,14 @@ public abstract class AxDataWidget extends AxWidget
         return dataProvider;
     }
 
-    public DataFactory getDataFactory() {
-        return dataProvider == null ? dataFactory : dataProvider.getDataFactory();
-    }
-
     @Override
     public void setDataProvider(AxDataProvider dataProvider) {
         this.dataProvider = dataProvider;
         setWidgetDataProvider(this, dataProvider);
+    }
+
+    public DataFactory getDataFactory() {
+        return dataProvider == null ? dataFactory : dataProvider.getDataFactory();
     }
 
     public void setDataFactory(DataFactory dataFactory) {
@@ -189,12 +187,6 @@ public abstract class AxDataWidget extends AxWidget
     }
 
     @Override
-    public void setValue(Object newValue) {
-        logger.debug("setValue => " + getClass().getSimpleName() + ": " + newValue);
-        getValueModel().setValue(newValue);
-    }
-
-    @Override
     public void removeValueChangeListener(PropertyChangeListener listener) {
         getValueModel().removeValueChangeListener(listener);
     }
@@ -202,6 +194,12 @@ public abstract class AxDataWidget extends AxWidget
     @Override
     public Object getValue() {
         return getValueModel().getValue();
+    }
+
+    @Override
+    public void setValue(Object newValue) {
+        logger.debug("setValue => " + getClass().getSimpleName() + ": " + newValue);
+        getValueModel().setValue(newValue);
     }
 
     public Object[] getValueArray() {

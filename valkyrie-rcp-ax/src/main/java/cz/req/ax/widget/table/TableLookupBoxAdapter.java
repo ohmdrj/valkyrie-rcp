@@ -16,6 +16,7 @@
 
 package cz.req.ax.widget.table;
 
+import cz.req.ax.data.AxDataProvider;
 import org.springframework.util.Assert;
 import org.valkyriercp.binding.value.ValueModel;
 import org.valkyriercp.widget.TitledWidgetApplicationDialog;
@@ -30,14 +31,15 @@ import java.awt.event.ActionListener;
  */
 public class TableLookupBoxAdapter {
 
-    AxTableDataProvider dataProvider;
+    AxDataProvider dataProvider;
     AxTableWidget tableWidget;
+    AxTableDescription tableDescription;
     ValueModel valueModel;
 
     public TableLookupBoxAdapter() {
     }
 
-    public TableLookupBoxAdapter(TableLookupBox tableLookupBox, AxTableDataProvider dataProvider, ValueModel valueModel) {
+    public TableLookupBoxAdapter(TableLookupBox tableLookupBox, AxDataProvider dataProvider, ValueModel valueModel) {
         this.dataProvider = dataProvider;
         this.valueModel = valueModel;
         insLookupListener(tableLookupBox);
@@ -64,14 +66,21 @@ public class TableLookupBoxAdapter {
         }
     }
 
+    public AxTableDescription getTableDescription() {
+        Assert.notNull(dataProvider, "AxDataProvider is null");
+        if (tableDescription == null) {
+            tableDescription = new AxTableDescription(dataProvider);
+        }
+        return tableDescription;
+    }
+
     public AxTableWidget getTableWidget() {
         Assert.notNull(dataProvider, "AxDataProvider is null");
-        Assert.notNull(dataProvider.getTableDescription(), "AxTableDescription is null");
         if (tableWidget == null) {
 //            tableWidget = new AxTableWidget(dataProvider, dataProvider.getTableDescription());
             tableWidget = new AxTableWidget();
             tableWidget.setDataProvider(dataProvider);
-            tableWidget.setTableDescription(dataProvider.getTableDescription());
+            tableWidget.setTableDescription(tableDescription);
             tableWidget.setSearchField(true);
             tableWidget.getTableWidget().getComponent().setPreferredSize(new Dimension(600, 600));
         }

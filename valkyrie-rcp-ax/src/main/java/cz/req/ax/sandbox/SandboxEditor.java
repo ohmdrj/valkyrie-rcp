@@ -19,13 +19,12 @@ package cz.req.ax.sandbox;
 import cz.req.ax.data.AxDataProvider;
 import cz.req.ax.data.AxFormBuilder;
 import cz.req.ax.widget.editor.AxEditor;
+import cz.req.ax.widget.table.AxLookupBoxBinding;
 import cz.req.ax.widget.table.AxTableDataProvider;
 import cz.req.ax.widget.table.AxTableDescription;
-import cz.req.ax.widget.table.TableLookupBoxBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,12 +32,9 @@ import java.util.List;
  */
 public class SandboxEditor extends AxEditor {
 
-    ArrayList<TestItem> list = new ArrayList<TestItem>();
+    ArrayList<TestItem> list = new ArrayList<TestItem>(TestItem.samples);
 
     public SandboxEditor() {
-        list.add(new TestItem("Foo"));
-        list.add(new TestItem("Bar"));
-
         //setEditorType(EditorType.NEWTAB);
         setDataProvider(new AxDataProvider(TestItem.class) {
 
@@ -66,21 +62,64 @@ public class SandboxEditor extends AxEditor {
     }
 
     @Override
+    public void createWidget() {
+        super.createWidget();
+
+    }
+
+    @Override
     public void initTable(AxTableDescription description) {
         description.add("string");
     }
 
     @Override
     public void initForm(AxFormBuilder builder) {
-        //TODO autoinitialize
-        builder.setStandardPreset1();
-        builder.addBindingWithLabel("string", new TableLookupBoxBinding(builder.getFormModel(), "string", "*", new AxTableDataProvider(String.class) {
+        final String[] stringsArr = {"Prvni", "Druhy", "Duhovy", "Treti"};
+        final List<String> stringsLst = Arrays.asList(stringsArr);
 
-            List<String> strings = Arrays.asList(new String[]{"Prvni", "Druhy", "Treti"});
+        //TODO autoinitialize?
+        builder.setStandardPreset1();
+
+        /*AxEditor itemEditor = new AxEditor(getDataProvider()) {
+            @Override
+            public void initForm(AxFormBuilder builder) {
+                builder.addPropertyWithLabel("string");
+                builder.addPropertyWithLabel("date");
+            }
 
             @Override
+            public void initTable(AxTableDescription description) {
+                description.add("string", "date");
+            }
+        };
+        /*builder.addBindingWithLabel("item", itemEditor.createBinder("item").bind(builder.getFormModel(),"item",null));*/
+        /*builder.addBindingWithLabel("string", new AxLookupEditorBinding(itemEditor, builder.getFormModel(), "item") {
+            @Override
+            public String getObjectLabel(Object o) {
+                if (o instanceof TestItem) {
+                    return ((TestItem)o).getString();
+                }
+                return "#";
+            }
+
+            @Override
+            protected Object createFilterFromString(String textFieldValue) {
+                return null;
+            }
+        });*/
+
+//        builder.addBindingWithLabel("string", new AxLookupBoxBinding(builder.getFormModel(), "string", "*", new AxTableDataProvider(String.class) {
+//
+//
+//            @Override
+//            public List getList(Object criteria) {
+//                return stringsLst;
+//            }
+//        }));
+        builder.addBindingWithLabel("string", new AxLookupBoxBinding(builder.getFormModel(), "item", "string", new AxTableDataProvider(TestItem.class) {
+            @Override
             public List getList(Object criteria) {
-                return strings;
+                return TestItem.samples;
             }
         }));
         builder.addRowGap();
@@ -95,67 +134,4 @@ public class SandboxEditor extends AxEditor {
         builder.addPropertyWithLabel("enumera");
     }
 
-    public static class TestItem {
-
-        Date date;
-        String string;
-        Integer numberInteger;
-        Float numberFloat;
-        TestEnum enumera;
-
-        public TestItem() {
-        }
-
-        public TestItem(String string) {
-            this.string = string;
-            this.date = new Date();
-            this.numberInteger = (int) Math.random() * 1000;
-            this.numberFloat = (float) Math.random() * 1000f;
-        }
-
-        public Date getDate() {
-            return date;
-        }
-
-        public void setDate(Date date) {
-            this.date = date;
-        }
-
-        public String getString() {
-            return string;
-        }
-
-        public void setString(String string) {
-            this.string = string;
-        }
-
-        public Integer getNumberInteger() {
-            return numberInteger;
-        }
-
-        public void setNumberInteger(Integer numberInteger) {
-            this.numberInteger = numberInteger;
-        }
-
-        public Float getNumberFloat() {
-            return numberFloat;
-        }
-
-        public void setNumberFloat(Float numberFloat) {
-            this.numberFloat = numberFloat;
-        }
-
-        public TestEnum getEnumera() {
-            return enumera;
-        }
-
-        public void setEnumera(TestEnum enumera) {
-            this.enumera = enumera;
-        }
-    }
-
-    public static enum TestEnum {
-        Foo, Bar, Ass
-
-    }
 }

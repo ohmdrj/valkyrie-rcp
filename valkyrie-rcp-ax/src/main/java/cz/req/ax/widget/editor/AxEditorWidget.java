@@ -16,7 +16,6 @@
 
 package cz.req.ax.widget.editor;
 
-import cz.req.ax.data.AxEditorBinder;
 import cz.req.ax.widget.AxFormWidget;
 import cz.req.ax.widget.table.AxTableDescription;
 import cz.req.ax.widget.table.AxTableWidget;
@@ -47,10 +46,6 @@ public class AxEditorWidget<D extends AxAbstractDetail> extends AxAbstractEditor
             JTextField filterField = getMaster().getTableWidget().getTextFilterField();
             getToolbar().setFilterField(filterField);
         }
-    }
-
-    public AxEditorBinder createBinder(String field) {
-        return new AxEditorBinder(this, field);
     }
 
     public void setDetailEditor(AxFormWidget widget) {

@@ -19,12 +19,14 @@ package cz.req.ax.widget.table;
 import com.jidesoft.utils.SwingWorker;
 import cz.req.ax.data.DataCollectionAware;
 import cz.req.ax.widget.editor.AxAbstractMaster;
+import org.jdesktop.swingx.JXTable;
 import org.springframework.util.Assert;
 import org.valkyriercp.application.support.StatusBarProgressMonitor;
 import org.valkyriercp.widget.editor.provider.DataProviderEvent;
 import org.valkyriercp.widget.editor.provider.DataProviderListener;
 import org.valkyriercp.widget.table.glazedlists.GlazedListTableWidget;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -81,8 +83,10 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
             Assert.notNull(tableDescription, "TableDescription is null");
             tableWidget = new GlazedListTableWidget(null, tableDescription, true);
             tableWidget.addSelectionObserver(valueObserver);
-            tableWidget.getTable().addMouseListener(getCommandAdapter());
-            tableWidget.getTable().addKeyListener(getCommandAdapter());
+            JXTable tableComponent = (JXTable) tableWidget.getTable();
+            tableComponent.setSortOrder(0, SortOrder.ASCENDING);
+            tableComponent.addMouseListener(getCommandAdapter());
+            tableComponent.addKeyListener(getCommandAdapter());
         }
         return tableWidget;
     }
