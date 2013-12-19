@@ -48,14 +48,14 @@ public abstract class AbstractCRUDBinding extends CustomBinding
         i = isShowDetailSupported() ? i + 1 : i;
         i = isEditSupported() ? i + 1 : i;
         this.commands = new ArrayList<AbstractCommand>(i);
-        if (isShowDetailSupported())
-            commands.add(getDetailCommand());
         if (isAddSupported())
             commands.add(getAddCommand());
-        if (isRemoveSupported())
-            commands.add(getRemoveCommand());
         if (isEditSupported())
             commands.add(getEditCommand());
+        if (isRemoveSupported())
+            commands.add(getRemoveCommand());
+        if (isShowDetailSupported())
+            commands.add(getDetailCommand());
         return this.commands;
     }
 

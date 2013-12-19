@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import org.valkyriercp.binding.form.FormModel;
 import org.valkyriercp.command.support.AbstractCommand;
 import org.valkyriercp.command.support.ActionCommand;
-import org.valkyriercp.component.ComponentUtils;
 import org.valkyriercp.component.Focussable;
 import org.valkyriercp.dialog.ApplicationDialog;
 import org.valkyriercp.dialog.TitledApplicationDialog;
@@ -186,7 +185,15 @@ public abstract class AbstractGlazedListsBinding extends AbstractCRUDBinding
         java.util.List<AbstractCommand> commands = getCommands();
         if ((commands != null) && (commands.size() > 0))
         {
-            JPanel buttons = ComponentUtils.createIconButtonPanel(commands);
+
+            //JPanel buttons = ComponentUtils.createIconButtonPanel(commands);
+            //editor.add(buttons, BorderLayout.SOUTH);
+            JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            for (AbstractCommand command : commands)
+            {
+                buttons.add(command.createButton());
+            }
+            //editor.add(buttons, BorderLayout.NORTH);
             editor.add(buttons, BorderLayout.SOUTH);
         }
         valueModelChanged(getValue());

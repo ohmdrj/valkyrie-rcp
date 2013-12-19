@@ -17,9 +17,9 @@ import java.util.logging.Level;
 @org.springframework.stereotype.Component
 public class DialogFactory {
     @Autowired
-    private ApplicationConfig applicationConfig;
+    protected ApplicationConfig applicationConfig;
 
-    private Map<Integer, Object[]> optionsMap;
+    protected Map<Integer, Object[]> optionsMap;
 
     public static final int YES_OPTION = 0;
     public static final int OK_OPTION = 0;
