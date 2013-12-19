@@ -16,6 +16,8 @@
 
 package cz.req.ax.sandbox;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,22 +26,25 @@ import java.util.List;
 /**
  * @author Ondrej Burianek
  */
-public class TestItem {
+public class TestItem implements Comparable<TestItem> {
     public static final String[] stringsArr = {"Prvni", "Druhy", "Duhovy", "Treti"};
     public static final List<String> stringsLst = Arrays.asList(stringsArr);
-    public static final ArrayList<TestItem> samples = new ArrayList<TestItem>();
+    public static final ArrayList<TestItem> itemsList = new ArrayList<TestItem>();
+
     static {
-        samples.add(new TestItem("Foo"));
-        samples.add(new TestItem("Bar"));
-        samples.add(new TestItem("Cenax"));
-        samples.add(new TestItem("Cexar"));
-        samples.add(new TestItem("Celia"));
+        itemsList.add(new TestItem("Foo"));
+        itemsList.add(new TestItem("Bar"));
+        itemsList.add(new TestItem("Cenax"));
+        itemsList.add(new TestItem("Cexar"));
+        itemsList.add(new TestItem("Celia"));
     }
+
     Date date;
     String string;
     TestItem item;
+    List<TestItem> childs;
     Integer numberInteger;
-    Float numberFloat;
+    BigDecimal numberDecimal;
     TestEnum1 enumera;
 
     public TestItem() {
@@ -49,7 +54,9 @@ public class TestItem {
         this.string = string;
         this.date = new Date();
         this.numberInteger = (int) Math.random() * 1000;
-        this.numberFloat = (float) Math.random() * 1000f;
+        this.numberDecimal = new BigDecimal(Math.random() * 1000d);
+        this.numberDecimal.setScale(4, RoundingMode.HALF_EVEN);
+        this.childs = new ArrayList<TestItem>();
     }
 
     public Date getDate() {
@@ -84,12 +91,20 @@ public class TestItem {
         this.numberInteger = numberInteger;
     }
 
-    public Float getNumberFloat() {
-        return numberFloat;
+    public List<TestItem> getChilds() {
+        return childs;
     }
 
-    public void setNumberFloat(Float numberFloat) {
-        this.numberFloat = numberFloat;
+    public void setChilds(List<TestItem> childs) {
+        this.childs = childs;
+    }
+
+    public BigDecimal getNumberDecimal() {
+        return numberDecimal;
+    }
+
+    public void setNumberDecimal(BigDecimal numberDecimal) {
+        this.numberDecimal = numberDecimal;
     }
 
     public TestEnum1 getEnumera() {
@@ -98,5 +113,14 @@ public class TestItem {
 
     public void setEnumera(TestEnum1 enumera) {
         this.enumera = enumera;
+    }
+
+    @Override
+    public int compareTo(TestItem o) {
+        try {
+            return getString().compareTo(o.getString());
+        } catch (Exception ex) {
+            return 0;
+        }
     }
 }

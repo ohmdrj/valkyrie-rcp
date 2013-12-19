@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+    <group name="testSimple">
+        <option name="testString" type="String" default="Foo"/>
+        <option name="testInteger" type="Integer" default="10"/>
+        <option name="testBoolean" type="Boolean" default="True"/>
+        <option name="testDirectory" type="Directory" default="Foo"/>
+    </group>
+    <group name="testSelection">
+        <option name="testCombo" type="String" default="Boo">
+            <selection value="Boo"/>
+            <selection value="Poo"/>
+            <selection value="Xoo"/>
+        </option>
+        <option name="testSource" type="String" default="" provider="cz.req.ax.sandbox.TestOptionProvider"/>
+    </group>
+
+</root>

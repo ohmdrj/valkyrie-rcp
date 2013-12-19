@@ -24,56 +24,24 @@ import org.valkyriercp.widget.table.PropertyColumnTableDescription;
 import org.valkyriercp.widget.table.glazedlists.GlazedListTableWidget;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  * @author Ondrej Burianek
  */
-public class AutoTestView extends AxTitledView {
-
-    public class TestObject implements Comparable<TestObject> {
-
-        String name;
-
-        public TestObject() {
-        }
-
-        public TestObject(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public int compareTo(TestObject o) {
-            try {
-                return name.compareTo(o.name);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return 0;
-            }
-        }
-    }
+public class TestView extends AxTitledView {
 
     ActionCommand testCommand;
-    ArrayList<TestObject> list;
 
-    public AutoTestView() {
+    public TestView() {
         super("testView1");
     }
 
-    public AutoTestView(String id) {
+    public TestView(String id) {
         super(id);
     }
 
     @Override
     public JComponent createViewControl() {
-        list = new ArrayList<TestObject>();
-        list.add(new TestObject("First"));
-        list.add(new TestObject("Second"));
-
         testCommand = new ActionCommand("Test") {
 
             @Override
@@ -82,11 +50,11 @@ public class AutoTestView extends AxTitledView {
             }
         };
 
-        PropertyColumnTableDescription tableDescription = new PropertyColumnTableDescription(TestObject.class);
-        tableDescription.addPropertyColumn("name");
-        GlazedListTableWidget tableWidget = new GlazedListTableWidget(list, tableDescription, false);
+        PropertyColumnTableDescription tableDescription = new PropertyColumnTableDescription(TestItem.class);
+        tableDescription.addPropertyColumn("string");
+        GlazedListTableWidget tableWidget = new GlazedListTableWidget(TestItem.itemsList, tableDescription, false);
 
-        FormFactory formFactory = new FormFactory("p", "p");
+        FormFactory formFactory = new FormFactory("200px", "p");
         formFactory.addRowExt(new JLabel(AxApp.applicationConfig().application().getName()));
         formFactory.addRowExt(tableWidget.getComponent());
         formFactory.addRowExt(testCommand.createButton());

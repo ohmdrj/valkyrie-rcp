@@ -30,7 +30,7 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 
-public class SandboxAutocomleteCombobox extends AxWidget {
+public class TestAutocomlete extends AxWidget {
 
     @Override
     public void createWidget() {
@@ -69,7 +69,7 @@ public class SandboxAutocomleteCombobox extends AxWidget {
             @Override
             public Object parseObject(String source, ParsePosition pos) {
                 String search = source.substring(pos.getIndex());
-                for (TestItem item : TestItem.samples) {
+                for (TestItem item : TestItem.itemsList) {
                     if (item.getString().startsWith(search)) {
                         return item;
                     }
@@ -78,12 +78,12 @@ public class SandboxAutocomleteCombobox extends AxWidget {
             }
         };
         AutoCompleteSupport.install(comboBox3,
-                GlazedLists.eventList(TestItem.samples),
+                GlazedLists.eventList(TestItem.itemsList),
                 GlazedLists.textFilterator(TestItem.class, "string"),
                 testFormat).setStrict(false);
 
         // === SwingX way
-        JXComboBox comboBox4 = new JXComboBox(TestItem.samples.toArray());
+        JXComboBox comboBox4 = new JXComboBox(TestItem.itemsList.toArray());
         comboBox4.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

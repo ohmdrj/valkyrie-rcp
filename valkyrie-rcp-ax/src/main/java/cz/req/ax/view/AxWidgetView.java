@@ -75,6 +75,9 @@ public class AxWidgetView extends WidgetView {
             throw new UnsupportedOperationException("Unsupported widget " + getWidget().getClass().getCanonicalName());
         }
         JComponent component = getWidget().getComponent();
+        if (getWidget() instanceof AxDataWidget) {
+            ((AxDataWidget)getWidget()).doRefresh();
+        }
         viewPanel.add(component, BorderLayout.CENTER);
         viewPanel.validate();
     }

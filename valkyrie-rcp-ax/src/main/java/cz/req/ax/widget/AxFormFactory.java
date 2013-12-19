@@ -36,6 +36,7 @@ public abstract class AxFormFactory implements FormDesigner {
 
 
     DataFactory dataFactory;
+    FormModel formModel;
 
     public AxFormFactory() {
     }
@@ -48,11 +49,16 @@ public abstract class AxFormFactory implements FormDesigner {
         this.dataFactory = dataFactory;
     }
 
+    public FormModel getModel() {
+        return formModel;
+    }
+
     public AxForm getForm() {
         AxForm form = new AxForm() {
             @Override
             public FormModel initFormModel() {
-                return dataFactory.getFormModel();
+                formModel = dataFactory.getFormModel();
+                return formModel;
             }
 
             @Override

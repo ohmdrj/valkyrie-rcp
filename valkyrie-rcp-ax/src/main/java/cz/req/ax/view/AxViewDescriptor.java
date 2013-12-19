@@ -16,6 +16,8 @@
 
 package cz.req.ax.view;
 
+import cz.req.ax.AxApp;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.valkyriercp.application.ApplicationWindow;
 import org.valkyriercp.application.PageComponent;
 import org.valkyriercp.application.View;
@@ -34,6 +36,10 @@ public class AxViewDescriptor extends AbstractViewDescriptor {
     View view;
 
     public AxViewDescriptor() {
+    }
+
+    public AxViewDescriptor(String id) {
+        super(id);
     }
 
     public AxViewDescriptor(Class clazz) {
@@ -74,18 +80,27 @@ public class AxViewDescriptor extends AbstractViewDescriptor {
 
     @Override
     public PageComponent createPageComponent() {
-        if (view == null && clazz == null) {
+        /*if (view == null && clazz == null) {
             throw new IllegalArgumentException("PageComponent " + getId() + " needs not null view,widget or clazz");
-        }
+        }*/
         if (view != null) {
             view.setDescriptor(this);
             return view;
         } else {
             Object object;
-            try {
-                object = clazz.newInstance();
-            } catch (ReflectiveOperationException ex) {
-                throw new RuntimeException(ex);
+            if (clazz == null) {
+                String beanId = getId().replaceAll("View","Widget");
+                try {
+                    object = AxApp.applicationConfig().applicationContext().getBean(beanId);
+                } catch (NoSuchBeanDefinitionException ex) {
+                    throw new RuntimeException(ex);
+                }
+            } else {
+                try {
+                    object = clazz.newInstance();
+                } catch (ReflectiveOperationException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
             View instance = null;
             if (object instanceof View) {

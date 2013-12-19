@@ -96,7 +96,7 @@ public class AxOptionsCommand extends ActionCommand {
     }
 
     protected String getMessageLabel(String name) {
-        return AxApp.applicationConfig().messageSource().getMessage("options." + name + ".label", null, Locale.getDefault());
+        return AxApp.applicationConfig().messageSource().getMessage("options." + name + ".label", null, name, Locale.getDefault());
     }
 
     @Override

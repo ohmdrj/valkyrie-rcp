@@ -22,12 +22,15 @@ import org.valkyriercp.binding.form.FormModel;
 import org.valkyriercp.form.binding.swing.AbstractGlazedListsBinding;
 import org.valkyriercp.widget.table.TableDescription;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * AxTableBinding
  *
  * @author Ondrej Burianek
  */
-//TODO @Deprecated?
+//TODO Refactorize! use init methods, more ax like
 public class AxTableBinding extends AbstractGlazedListsBinding implements RefreshListener {
 
     AxTableDescription tableDescription;
@@ -47,6 +50,14 @@ public class AxTableBinding extends AbstractGlazedListsBinding implements Refres
         listChanged();
     }
 
+    @Override
+    protected JComponent doBindControl() {
+        JComponent component = super.doBindControl();
+        component.setMinimumSize(new Dimension(240,80));
+        component.setPreferredSize(new Dimension(480,160));
+        return component;
+    }
+
     public void setTableDescription(AxTableDescription tableDescription) {
         this.tableDescription = tableDescription;
     }
@@ -60,6 +71,6 @@ public class AxTableBinding extends AbstractGlazedListsBinding implements Refres
         super.setAddSupported(supported);
         super.setEditSupported(supported);
         super.setRemoveSupported(supported);
-        super.setShowDetailSupported(supported);
+//        super.setShowDetailSupported(supported);
     }
 }

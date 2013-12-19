@@ -35,9 +35,10 @@ import java.util.Properties;
  */
 public class AxApplicationSettings {
 
-    @Autowired
-    protected ApplicationDescriptor applicationDescriptor;
     protected org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
+    @Autowired
+    ApplicationDescriptor applicationDescriptor;
+    SettingsCallback settingsCallback;
     File file;
     String appname;
     Map<String, String> values;
@@ -45,6 +46,10 @@ public class AxApplicationSettings {
     public String getAppname() {
         if (appname == null) {
             appname = applicationDescriptor.getDisplayName();
+            //Fix undefined
+            if ("displayName".equals(appname)) {
+                appname = null;
+            }
         }
         if (appname == null) {
             //MIG
@@ -58,6 +63,10 @@ public class AxApplicationSettings {
         this.appname = appname;
     }
 
+    public void setSettingsCallback(SettingsCallback settingsCallback) {
+        this.settingsCallback = settingsCallback;
+    }
+
     public boolean contains(String key) {
         return getValues().containsKey(key);
     }
@@ -69,7 +78,7 @@ public class AxApplicationSettings {
 
     public Boolean getBoolean(String key) {
         String val = get(key);
-        if (val == null) {
+        if (val == null || val.isEmpty()) {
             return Boolean.FALSE;
         }
         return Boolean.valueOf(val);
@@ -77,14 +86,14 @@ public class AxApplicationSettings {
 
     public Integer getInteger(String key) {
         String val = get(key);
-        if (val == null) {
+        if (val == null || val.isEmpty()) {
             return null;
         }
         return Integer.valueOf(val);
     }
 
     public String set(String key, String value) {
-        return getValues().put(key, value);
+        return getValues().put(key, value == null ? "" : value);
     }
 
     public String setInteger(String key, Integer value) {
@@ -129,9 +138,16 @@ public class AxApplicationSettings {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+        if (settingsCallback != null) {
+            settingsCallback.onSave();
+        }
     }
 
     public void writeSettings() {
         iniSave();
+    }
+
+    public static interface SettingsCallback {
+        public void onSave();
     }
 }

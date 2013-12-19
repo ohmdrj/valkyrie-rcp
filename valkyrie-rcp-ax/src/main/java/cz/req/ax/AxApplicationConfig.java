@@ -22,6 +22,7 @@ import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import cz.req.ax.command.AxCommandConfig;
 import cz.req.ax.command.AxCommandConfigurer;
 import cz.req.ax.data.ArrayToListModel;
+import cz.req.ax.dialog.AxDialogFactory;
 import cz.req.ax.options.AxApplicationOptions;
 import cz.req.ax.options.AxApplicationSettings;
 import cz.req.ax.remote.ConnectionRegistry;
@@ -82,6 +83,7 @@ import org.valkyriercp.factory.*;
 import org.valkyriercp.form.FormModelFactory;
 import org.valkyriercp.form.binding.BinderSelectionStrategy;
 import org.valkyriercp.form.binding.BindingFactoryProvider;
+import org.valkyriercp.form.binding.swing.NumberBinder;
 import org.valkyriercp.form.binding.swing.ScrollPaneBinder;
 import org.valkyriercp.form.binding.swing.SwingBinderSelectionStrategy;
 import org.valkyriercp.form.binding.swing.SwingBindingFactoryProvider;
@@ -102,13 +104,13 @@ import org.valkyriercp.security.support.DefaultApplicationSecurityManager;
 import org.valkyriercp.security.support.DefaultSecurityControllerManager;
 import org.valkyriercp.text.SelectAllFormComponentInterceptorFactory;
 import org.valkyriercp.text.TextComponentPopupInterceptorFactory;
-import org.valkyriercp.util.DialogFactory;
 import org.valkyriercp.util.ValkyrieRepository;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -303,8 +305,8 @@ public abstract class AxApplicationConfig implements ApplicationConfig {
     }
 
     @Bean
-    public DialogFactory dialogFactory() {
-        return new DialogFactory();
+    public AxDialogFactory dialogFactory() {
+        return new AxDialogFactory();
     }
 
     @Bean
@@ -391,9 +393,11 @@ public abstract class AxApplicationConfig implements ApplicationConfig {
         binderSelectionStrategy.registerBinderForControlType(JScrollPane.class, new ScrollPaneBinder(binderSelectionStrategy, JTextArea.class));
         binderSelectionStrategy.registerBinderForPropertyType(String.class, defaultBinderConfig.textComponentBinder());
         binderSelectionStrategy.registerBinderForPropertyType(boolean.class, defaultBinderConfig.checkBoxBinder());
-        binderSelectionStrategy.registerBinderForPropertyType(Boolean.class, defaultBinderConfig.checkBoxBinder());
         binderSelectionStrategy.registerBinderForPropertyType(Enum.class, defaultBinderConfig.enumComboBoxBinder());
-        binderSelectionStrategy.registerBinderForPropertyType(Boolean.class, defaultBinderConfig.trueFalseNullBinder());
+        binderSelectionStrategy.registerBinderForPropertyType(Boolean.class, defaultBinderConfig.checkBoxBinder());
+//        binderSelectionStrategy.registerBinderForPropertyType(Boolean.class, defaultBinderConfig.trueFalseNullBinder());
+        binderSelectionStrategy.registerBinderForPropertyType(Integer.class, new NumberBinder(Integer.class));
+        binderSelectionStrategy.registerBinderForPropertyType(BigDecimal.class, new NumberBinder(BigDecimal.class));
         binderSelectionStrategy.registerBinderForPropertyType(Date.class, new JXDatePickerDateFieldBinder());
         binderSelectionStrategy.registerBinderForPropertyType(Timestamp.class, new JXDatePickerDateFieldBinder());
     }

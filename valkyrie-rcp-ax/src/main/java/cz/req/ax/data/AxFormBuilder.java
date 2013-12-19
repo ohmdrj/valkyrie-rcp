@@ -38,7 +38,7 @@ public class AxFormBuilder extends AbstractFormBuilder {
 
     protected static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AxFormBuilder.class);
     private FormModel formModel;
-    private FormFactory swingFactory;
+    private FormFactory formFactory;
     private boolean autospan = true;
 
     public AxFormBuilder(BindingFactory bindingFactory, FormModel formModel) {
@@ -48,7 +48,7 @@ public class AxFormBuilder extends AbstractFormBuilder {
     public AxFormBuilder(BindingFactory bindingFactory, FormModel formModel, JPanel panel) {
         super(bindingFactory);
         this.formModel = formModel;
-        this.swingFactory = new FormFactory(panel);
+        this.formFactory = new FormFactory(panel);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AxFormBuilder extends AbstractFormBuilder {
 
     public JPanel getPanel() {
         getBindingFactory().getFormModel().revert();
-        return swingFactory.getPanel();
+        return formFactory.getPanel();
     }
 
     public void setStandardPreset1() {
@@ -71,77 +71,75 @@ public class AxFormBuilder extends AbstractFormBuilder {
     }
 
     public void setStandardSpecs(String specCol, String specRow) {
-        swingFactory.setStandardSpecs(specCol, specRow);
+        formFactory.setStandardSpecs(specCol, specRow);
     }
 
     public void setStandardRow(RowSpec standardRow) {
-        swingFactory.setStandardRow(standardRow);
+        formFactory.setStandardRow(standardRow);
     }
 
     public void setStandardCols(ColumnSpec... standardCols) {
-        swingFactory.setStandardCols(standardCols);
+        formFactory.setStandardCols(standardCols);
     }
 
     public FormLayout getLayout() {
-        return swingFactory.getLayout();
+        return formFactory.getLayout();
     }
 
     public void addRowGap() {
-        swingFactory.addRowGap();
+        formFactory.addRowGap();
     }
 
     public void addRowExt() {
-        swingFactory.addRowExt();
+        formFactory.addRowExt();
     }
 
     public void addGap() {
-        swingFactory.addGap();
+        formFactory.addGap();
     }
 
     public JComponent addComponent(JComponent component) {
-        swingFactory.addRow(true, autospan, component);
+        formFactory.addRow(true, autospan, component);
         return component;
     }
 
     public LabelAndComponent addComponentWithLabel(String property, JComponent component) {
+        return addComponentWithLabel(property, component, autospan);
+    }
+
+    public LabelAndComponent addComponentWithLabel(String property, JComponent component, boolean autospan) {
         JLabel labelComponent = createLabelFor(property, component);
-        swingFactory.addRow(true, autospan, labelComponent, component);
+        formFactory.addRow(true, autospan, labelComponent, component);
         return new LabelAndComponent(labelComponent, component);
     }
 
-    //    public JComponent addProperty(String property) {
-//        JComponent propertyComponent = createDefaultBinding(property).getControl();
-//        addComponent(propertyComponent);
-//        return propertyComponent;
-//    }
-//    public JLabel addLabel(String property) {
-//        return addLabel(property, null);
-//    }
-//
-//    public JLabel addLabel(String property, JComponent forComponent) {
-//        JLabel labelComponent = createLabelFor(property, forComponent);
-//        swingFactory.addRowGap(labelComponent);
-//        return labelComponent;
-//    }
     public LabelAndComponent addPropertyWithLabel(String property) {
+        return addPropertyWithLabel(property, autospan);
+    }
+
+    public LabelAndComponent addPropertyWithLabel(String property, boolean autospan) {
         JComponent propertyComponent = createDefaultBinding(property).getControl();
         JLabel labelComponent = createLabelFor(property, propertyComponent);
-        swingFactory.addRow(true, autospan, labelComponent, propertyComponent);
+        formFactory.addRow(true, autospan, labelComponent, propertyComponent);
         return new LabelAndComponent(labelComponent, propertyComponent);
     }
 
     public LabelAndComponent addBindingWithLabel(String property, Binding binding) {
+        return addBindingWithLabel(property, binding, autospan);
+    }
+
+    public LabelAndComponent addBindingWithLabel(String property, Binding binding, boolean autospan) {
         interceptBinding(binding);
         JComponent propertyComponent = binding.getControl();
         JLabel labelComponent = createLabelFor(property, propertyComponent);
-        swingFactory.addRow(true, autospan, labelComponent, propertyComponent);
+        formFactory.addRow(true, autospan, labelComponent, propertyComponent);
         return new LabelAndComponent(labelComponent, propertyComponent);
     }
 
     public JComponent addBinding(Binding binding, CellConstraints constraints) {
         interceptBinding(binding);
         JComponent propertyComponent = binding.getControl();
-        swingFactory.addComp(propertyComponent, constraints);
+        formFactory.addComp(propertyComponent, constraints);
         return propertyComponent;
     }
 

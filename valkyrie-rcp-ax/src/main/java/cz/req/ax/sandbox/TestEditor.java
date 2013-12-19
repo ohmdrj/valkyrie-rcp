@@ -18,10 +18,13 @@ package cz.req.ax.sandbox;
 
 import cz.req.ax.data.AxDataProvider;
 import cz.req.ax.data.AxFormBuilder;
+import cz.req.ax.data.binding.AxTableBinding;
+import cz.req.ax.widget.AxFormFactory;
 import cz.req.ax.widget.editor.AxEditor;
 import cz.req.ax.widget.table.AxLookupBoxBinding;
 import cz.req.ax.widget.table.AxTableDataProvider;
 import cz.req.ax.widget.table.AxTableDescription;
+import org.valkyriercp.form.AbstractForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,11 +33,11 @@ import java.util.List;
 /**
  * @author Ondrej Burianek
  */
-public class SandboxEditor extends AxEditor {
+public class TestEditor extends AxEditor {
 
-    ArrayList<TestItem> list = new ArrayList<TestItem>(TestItem.samples);
+    ArrayList<TestItem> list = new ArrayList<TestItem>(TestItem.itemsList);
 
-    public SandboxEditor() {
+    public TestEditor() {
         //setEditorType(EditorType.NEWTAB);
         setDataProvider(new AxDataProvider(TestItem.class) {
 
@@ -116,10 +119,33 @@ public class SandboxEditor extends AxEditor {
 //                return stringsLst;
 //            }
 //        }));
+
+        AxTableDescription tableDesc = new AxTableDescription(TestItem.class);
+        tableDesc.add("string", "date");
+        AxTableBinding tableBind = new AxTableBinding(builder.getFormModel(), "childs", tableDesc) {
+            @Override
+            protected Object getNewFormObject() {
+                return new TestItem("New");
+            }
+
+            @Override
+            protected AbstractForm createAddEditForm() {
+                return new AxFormFactory(TestItem.class) {
+                    @Override
+                    public void initForm(AxFormBuilder builder) {
+                        builder.setStandardPreset1();
+                        builder.addPropertyWithLabel("string");
+                        builder.addPropertyWithLabel("date");
+                    }
+                }.getForm();
+            }
+        };
+        tableBind.setAllSupported(true);
+        builder.addBindingWithLabel("childs", tableBind);
         builder.addBindingWithLabel("string", new AxLookupBoxBinding(builder.getFormModel(), "item", "string", new AxTableDataProvider(TestItem.class) {
             @Override
             public List getList(Object criteria) {
-                return TestItem.samples;
+                return TestItem.itemsList;
             }
         }));
         builder.addRowGap();
@@ -129,7 +155,7 @@ public class SandboxEditor extends AxEditor {
         builder.addRowGap();
         builder.addPropertyWithLabel("numberInteger");
         builder.addRowGap();
-        builder.addPropertyWithLabel("numberFloat");
+        builder.addPropertyWithLabel("numberDecimal");
         builder.addRowGap();
         builder.addPropertyWithLabel("enumera");
     }

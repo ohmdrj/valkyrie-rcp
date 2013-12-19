@@ -29,6 +29,10 @@ import org.valkyriercp.application.PageDescriptor;
 import org.valkyriercp.application.ViewDescriptor;
 import org.valkyriercp.application.config.ApplicationLifecycleAdvisor;
 import org.valkyriercp.form.binding.BinderSelectionStrategy;
+import org.valkyriercp.form.binding.swing.NumberBinder;
+
+import java.math.BigDecimal;
+import java.util.Locale;
 
 /**
  * @author Ondrej Burianek
@@ -37,6 +41,8 @@ import org.valkyriercp.form.binding.BinderSelectionStrategy;
 public class SandboxApplicationConfig extends AxApplicationConfig {
 
     public static void main(String[] args) {
+        Locale.setDefault(new Locale("cs", "CZ"));
+//        Locale.setDefault(new Locale("en", "US"));
         new AxApplicationLauncher(SandboxApplicationConfig.class);
     }
 
@@ -44,52 +50,59 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
     public ApplicationLifecycleAdvisor applicationLifecycleAdvisor() {
         ApplicationLifecycleAdvisor applicationLifecycleAdvisor = super.applicationLifecycleAdvisor();
         applicationLifecycleAdvisor.setStartingPageDescriptor(naviPage());
+        options().setPath("/cz/req/ax/sandbox/options.xml");
         return applicationLifecycleAdvisor;
     }
 
     @Bean
     public PageDescriptor naviPage() {
         AxApplicationNaviPageDescriptor pageDescriptor = new AxApplicationNaviPageDescriptor();
-        pageDescriptor.addGroup("Forms").addView(testEditor(),testAutocomplete());
-        pageDescriptor.addGroup("Autowire").addView(testView1(), testView2(), testWidget());
-        //pageDescriptor.addGroup("Login").addView(loginView());
-        pageDescriptor.setViewDescriptor(testEditor());
+        pageDescriptor.addGroup("Editors").addView(testEditor());
+        pageDescriptor.addGroup("Forms").addView(testForm(), testAutocomplete());
+        pageDescriptor.addGroup("Views").addView(testView(), testView1(), testView2(), testView3());
+        pageDescriptor.setViewDescriptor(testForm());
         return pageDescriptor;
     }
 
     @Bean
     public ViewDescriptor testEditor() {
-        return new AxViewDescriptor("testEditor", new SandboxEditor());
+        return new AxViewDescriptor("testEditor", new TestEditor());
+    }
+
+    @Bean
+    public ViewDescriptor testForm() {
+        return new AxViewDescriptor("testForm", new TestForm());
     }
 
     @Bean
     public ViewDescriptor testAutocomplete() {
-        return new AxViewDescriptor("testAutocomplete", new SandboxAutocomleteCombobox());
+        return new AxViewDescriptor("testAutocomplete", new TestAutocomlete());
+    }
+
+    @Bean
+    public ViewDescriptor testView() {
+        return new AxViewDescriptor("testView");
     }
 
     @Bean
     public ViewDescriptor testView1() {
-        return new AxViewDescriptor(AutoTestView.class);
+        return new TestView("testView1").getDescriptor();
     }
 
     @Bean
     public ViewDescriptor testView2() {
-        return new AutoTestView("testView2").getDescriptor();
+        return new AxViewDescriptor("testView2", TestView.class);
     }
 
     @Bean
-    public ViewDescriptor testWidget() {
-        return new AxViewDescriptor(autoTestWidget());
+    public ViewDescriptor testView3() {
+        return new AxViewDescriptor(testWidget());
     }
 
     @Bean
-    public AutoTestWidget autoTestWidget() {
-        return new AutoTestWidget();
+    public TestWidget testWidget() {
+        return new TestWidget();
     }
-
-    /*public ViewDescriptor testItemView() {
-        return new AxViewDescriptor("testItemView", getFormWidget());
-    }*/
 
     @Bean
     @Override
@@ -105,6 +118,11 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
     @Override
     protected void registerBinders(BinderSelectionStrategy binderSelectionStrategy) {
         super.registerBinders(binderSelectionStrategy);
+        NumberBinder numberBinder = new NumberBinder(BigDecimal.class);
+        numberBinder.setFormat("###,##0.00");
+        numberBinder.setUnformat("#0.####");
+        binderSelectionStrategy.registerBinderForPropertyType(BigDecimal.class, numberBinder);
+        binderSelectionStrategy.registerBinderForPropertyType(Integer.class, new NumberBinder(Integer.class));
         binderSelectionStrategy.registerBinderForPropertyType(TestEnum2.class, enumerationBinder());
         binderSelectionStrategy.registerBinderForPropertyType(TestEnum1.class, enumerationBinder());
     }

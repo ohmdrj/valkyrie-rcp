@@ -16,10 +16,10 @@
 
 package cz.req.ax.options;
 
+import org.apache.log4j.helpers.LogLog;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author Ondrej Burianek
  */
-public class AxApplicationOptions implements InitializingBean {
+public class AxApplicationOptions /*implements InitializingBean*/ {
 
     @Autowired
     MessageSource messageSource;
@@ -54,10 +54,10 @@ public class AxApplicationOptions implements InitializingBean {
         return options;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        initalizeOptions();
-    }
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        initalizeOptions();
+//    }
 
     private void initalizeOptions() {
         options = new ArrayList<OptionGroup>();
@@ -98,6 +98,9 @@ public class AxApplicationOptions implements InitializingBean {
         }
         try {
             InputStream inputStream = getClass().getResourceAsStream(path);
+            if (inputStream == null) {
+                LogLog.error("Missing options definition resource: " + path);
+            }
             Document document = new SAXReader().read(inputStream);
             Element root = document.getRootElement();
             for (Object o1 : root.elements("group")) {
@@ -114,6 +117,16 @@ public class AxApplicationOptions implements InitializingBean {
 //                    item.setSelections(selections);
                     group.addOption(item);
                     ArrayList selections = new ArrayList();
+
+                    if (e2.attributeValue("provider") != null) {
+                        try {
+                            OptionProvider provider = (OptionProvider) Class.forName(e2.attributeValue("provider")).newInstance();
+                            selections.addAll(provider.optionValues());
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
                     for (Object o3 : e2.elements("selection")) {
                         Element e3 = (Element) o3;
                         String value = e3.attributeValue("value");

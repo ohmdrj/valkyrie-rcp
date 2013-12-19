@@ -24,13 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Ondrej Burianek
  */
-public class AutoTestWidget extends AxWidget {
+public class TestWidget extends AxWidget {
 
     @Autowired
     ConnectionRegistry connectionRegistry;
@@ -39,32 +38,22 @@ public class AutoTestWidget extends AxWidget {
     @Override
     public void createWidget() {
         tableWidget = new AxTableWidget();
-        tableWidget.setDataProvider(new AxDataProvider(Exception.class) {
+        tableWidget.setDataProvider(new AxDataProvider(TestItem.class) {
 
             @Override
             public List getList(Object criteria) {
-                ArrayList<Exception> list = new ArrayList<Exception>();
-                list.add(new Exception("test"));
-                list.add(new Exception("fest"));
-                list.add(new Exception("best"));
-                return list;
+                return TestItem.itemsList;
             }
         });
-        tableWidget.setTableDescription("message");
+        tableWidget.setTableDescription("string");
         addFull(tableWidget);
         addRow(new JButton(new AbstractAction("Test") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 tableWidget.refresh();
-//                tableWidget.getTableWidget().getRows();
-//                tableWidget.getTableWidget().selectRowObject(0, null);
-//                tableWidget.getTableWidget().getTable().getModel().getRowCount();
             }
         }));
         addRow(new JLabel("Autowire: " + (connectionRegistry == null ? "NULL :(" : "OK!! :)")));
-        //addRow(new JLabel("Loadweave: " + (tableWidget.connectionRegistry == null? "NULL :(" : "OK!! :)")));
-//        Object test = ValkyrieRepository.getInstance().getApplicationConfig()
-//        addRow(new JLabel("Loadweave: " + (test == null? "NULL :(" : "OK!! :)")));
     }
 }
