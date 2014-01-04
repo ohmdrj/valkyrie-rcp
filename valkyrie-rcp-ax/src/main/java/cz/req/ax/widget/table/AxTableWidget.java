@@ -26,7 +26,6 @@ import org.valkyriercp.widget.editor.provider.DataProviderEvent;
 import org.valkyriercp.widget.editor.provider.DataProviderListener;
 import org.valkyriercp.widget.table.glazedlists.GlazedListTableWidget;
 
-import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -84,7 +83,7 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
             tableWidget = new GlazedListTableWidget(null, tableDescription, true);
             tableWidget.addSelectionObserver(valueObserver);
             JXTable tableComponent = (JXTable) tableWidget.getTable();
-            tableComponent.setSortOrder(0, SortOrder.ASCENDING);
+            //tableComponent.setSortOrder(0, SortOrder.ASCENDING);
             tableComponent.addMouseListener(getCommandAdapter());
             tableComponent.addKeyListener(getCommandAdapter());
         }

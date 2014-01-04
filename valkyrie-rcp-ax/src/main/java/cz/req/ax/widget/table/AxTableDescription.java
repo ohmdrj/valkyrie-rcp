@@ -25,10 +25,14 @@ import cz.req.ax.data.DataFactory;
 import org.valkyriercp.util.MessageConstants;
 import org.valkyriercp.widget.table.PropertyColumn;
 import org.valkyriercp.widget.table.PropertyColumnTableDescription;
+import org.valkyriercp.widget.table.TableCellRenderers;
 
 import javax.swing.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -109,6 +113,14 @@ public class AxTableDescription extends PropertyColumnTableDescription {
             } else if (SortOrder.DESCENDING.equals(order)) {
                 columnComparators.add(GlazedLists.reverseComparator(comparator));
             }
+        }
+        Class<?> type = col.getAccessor().getPropertyType();
+        if (BigDecimal.class.equals(type)) {
+            DecimalFormat format = new DecimalFormat("###,###,###,##0.00");
+            col.setRenderer(new TableCellRenderers.BigDecimalRenderer(format));
+        }
+        if (Date.class.equals(type)) {
+            col.setRenderer(TableCellRenderers.RIGHT_ALIGNED_RENDERER);
         }
         return col;
     }
