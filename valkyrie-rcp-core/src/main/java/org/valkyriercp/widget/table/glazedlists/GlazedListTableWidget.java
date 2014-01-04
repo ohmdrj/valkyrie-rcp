@@ -23,7 +23,6 @@ import org.valkyriercp.widget.table.TableCellRenderers;
 import org.valkyriercp.widget.table.TableDescription;
 import org.valkyriercp.widget.table.TableWidget;
 
-import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.*;
@@ -117,47 +116,33 @@ public final class GlazedListTableWidget extends AbstractWidget implements
 	private boolean mAddHighlightSelectColumn;
 	private TableDescription mTableDesc;
 
-	public GlazedListTableWidget(List<? extends Object> rows,
-			TableDescription tableDesc) {
+	public GlazedListTableWidget(List<? extends Object> rows, TableDescription tableDesc) {
 		this(rows, tableDesc, tableDesc.getDefaultComparator());
 	}
 
-	public GlazedListTableWidget(List<? extends Object> rows,
-			TableDescription tableDesc, boolean enableFiltering) {
+	public GlazedListTableWidget(List<? extends Object> rows, TableDescription tableDesc, boolean enableFiltering) {
 		this(rows, tableDesc, tableDesc.getDefaultComparator(), enableFiltering);
 	}
 
-	public GlazedListTableWidget(List<? extends Object> rows,
-			TableDescription tableDesc, Comparator comparator) {
+	public GlazedListTableWidget(List<? extends Object> rows, TableDescription tableDesc, Comparator comparator) {
 		this(rows, tableDesc, comparator, true);
-		// Als de tablewidget met ons eigen TableDescription class is gemaakt
-		// kunnen we additionele dingen als width/resizable/renderer en editor
-		// zetten
-		// bedenking: zouden we tabledesc van een iterator voorzien om over de
-		// kolommen te lopen?
 	}
 
-	public GlazedListTableWidget(List<? extends Object> rows,
-			TableDescription tableDesc, Comparator comparator,
-			boolean enableFiltering) {
-		this(tableDesc.getDataType(), rows, GlazedListsSupport
-				.makeTableFormat(tableDesc),
-				enableFiltering ? GlazedListsSupport
-						.makeFilterProperties(tableDesc) : null, comparator,
-				tableDesc.hasSelectColumn());
+	public GlazedListTableWidget(List<? extends Object> rows, TableDescription tableDesc, Comparator comparator, boolean enableFiltering) {
+        mDataType = tableDesc.getDataType();
+        mRows = rows;
+        mFormat = GlazedListsSupport.makeTableFormat(tableDesc);
+        mFilterProperties = enableFiltering ? GlazedListsSupport.makeFilterProperties(tableDesc) : null;
+        mComparator = comparator;
+        mAddHighlightSelectColumn = tableDesc.hasSelectColumn();
 		mTableDesc = tableDesc;
-		// Als de tablewidget met ons eigen TableDescription class is gemaakt
-		// kunnen we additionele dingen als width/resizable/renderer en editor
-		// zetten
-		// bedenking: zouden we tabledesc van een iterator voorzien om over de
-		// kolommen te lopen?
+        postConstruct();
 	}
 
 	private TableCellRenderer wrapInSortArrowHeaderRenderer(
 			TableCellRenderer renderer) {
 		if (tableComparatorChooser != null) {
-			return tableComparatorChooser
-					.createSortArrowHeaderRenderer(renderer);
+			return tableComparatorChooser.createSortArrowHeaderRenderer(renderer);
 		} else {
 			return renderer;
 		}
@@ -169,10 +154,8 @@ public final class GlazedListTableWidget extends AbstractWidget implements
 		this(dataType, rows, format, filterProperties, null, false);
 	}
 
-	protected GlazedListTableWidget(Class dataType,
-			List<? extends Object> rows, TableFormat format,
-			String[] filterProperties, Comparator comparator,
-			boolean addHighlightSelectColumn) {
+	protected GlazedListTableWidget(Class dataType, List<? extends Object> rows, TableFormat format,
+			String[] filterProperties, Comparator comparator, boolean addHighlightSelectColumn) {
 		mDataType = dataType;
 		mRows = rows;
 		mFormat = format;
