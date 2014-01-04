@@ -118,7 +118,7 @@ public class BigDecimalTextField extends JTextField {
 		this.unformat = unformat;
 		setBigDecimalFormat(unformat, numberClass);
 		this.numberClass = numberClass;
-		setDocument(new BigDecimalDocument(nrOfNonDecimals, nrOfDecimals, negativeSign));
+		setDocument(new BigDecimalDocument(nrOfNonDecimals, nrOfDecimals, negativeSign, '.'));
 		addFocusListener(new FormatFocusListener());
 	}
 
