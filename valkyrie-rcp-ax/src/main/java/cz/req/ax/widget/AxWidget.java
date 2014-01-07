@@ -19,11 +19,16 @@ package cz.req.ax.widget;
 import com.jgoodies.forms.layout.RowSpec;
 import cz.req.ax.AxApp;
 import cz.thickset.utils.swing.FormFactory;
+import org.jdesktop.jxlayer.JXLayer;
+import org.jdesktop.jxlayer.plaf.effect.BufferedImageOpEffect;
+import org.jdesktop.jxlayer.plaf.ext.LockableUI;
+import org.jdesktop.swingx.image.ColorTintFilter;
 import org.valkyriercp.application.ApplicationWindow;
 import org.valkyriercp.widget.AbstractWidget;
 import org.valkyriercp.widget.Widget;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +40,23 @@ import java.util.List;
 public abstract class AxWidget extends AbstractWidget {
 
     protected org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
-    private List<Widget> widgets = new ArrayList<Widget>();
+    private List<Widget> widgets;
     private JPanel panel;
+    private JXLayer<JComponent> layer;
+    private LockableUI lockableUI;
     private FormFactory formFactory;
     private String id;
     private boolean enabled = true;
 
     public AxWidget() {
+        widgets = new ArrayList<Widget>();
+        lockableUI = new LockableUI(new BufferedImageOpEffect(new ColorTintFilter(Color.WHITE, 0.5f)));
+        layer = new JXLayer<JComponent>(panel);
+        layer.setUI(lockableUI);
     }
 
     public AxWidget(String id) {
+        this();
         this.id = id;
     }
 
@@ -129,8 +141,16 @@ public abstract class AxWidget extends AbstractWidget {
     public JComponent getComponent() {
         if (panel == null) {
             createWidget();
+            layer.setView(panel);
         }
-        return panel;
+        return layer;
+        //return panel;
+    }
+
+    public void setLocked(boolean locked) {
+        lockableUI.setLocked(locked);
+        layer.revalidate();
+        layer.repaint();
     }
 
     public void resetComponent() {
@@ -155,15 +175,15 @@ public abstract class AxWidget extends AbstractWidget {
 
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         for (Widget widget : widgets) {
             widget.getComponent().setEnabled(enabled);
         }
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 
     public AbstractWidget getHeader() {

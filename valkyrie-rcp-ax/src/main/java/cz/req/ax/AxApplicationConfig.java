@@ -49,7 +49,6 @@ import org.valkyriercp.application.config.ApplicationConfig;
 import org.valkyriercp.application.config.ApplicationLifecycleAdvisor;
 import org.valkyriercp.application.config.ApplicationMode;
 import org.valkyriercp.application.config.ApplicationObjectConfigurer;
-import org.valkyriercp.application.config.support.DefaultApplicationLifecycleAdvisor;
 import org.valkyriercp.application.config.support.DefaultBinderConfig;
 import org.valkyriercp.application.config.support.UIManagerConfigurer;
 import org.valkyriercp.application.exceptionhandling.DelegatingExceptionHandler;
@@ -186,7 +185,7 @@ public abstract class AxApplicationConfig implements ApplicationConfig {
     @Bean
     @Override
     public ApplicationLifecycleAdvisor applicationLifecycleAdvisor() {
-        DefaultApplicationLifecycleAdvisor lifecycleAdvisor = new DefaultApplicationLifecycleAdvisor();
+        AxApplicationLifecycleAdvisor lifecycleAdvisor = new AxApplicationLifecycleAdvisor();
         lifecycleAdvisor.setCommandConfigClass(commandConfigClass);
         lifecycleAdvisor.setStartingPageDescriptor(startingPage());
         return lifecycleAdvisor;

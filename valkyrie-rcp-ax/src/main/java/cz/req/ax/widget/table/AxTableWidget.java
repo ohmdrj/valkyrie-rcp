@@ -65,16 +65,16 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
         return tableDescription;
     }
 
+    public void setTableDescription(AxTableDescription tableDescription) {
+        this.tableDescription = tableDescription;
+    }
+
     public void setTableDescription(String... columns) {
         AxTableDescription td = new AxTableDescription(getDataProvider());
         for (String string : columns) {
             td.add(string);
         }
         setTableDescription(td);
-    }
-
-    public void setTableDescription(AxTableDescription tableDescription) {
-        this.tableDescription = tableDescription;
     }
 
     public GlazedListTableWidget getTableWidget() {
@@ -162,6 +162,10 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
         }
     }
 
+    public org.valkyriercp.progress.ProgressMonitor getProgressMonitor() {
+        return getApplicationWindow().getStatusBar().getProgressMonitor();
+    }
+
     @Override
     public void onAboutToShow() {
         super.onAboutToShow();
@@ -171,6 +175,27 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
     @Override
     public void addSelectionObserver(Observer selectionObserver) {
         getTableWidget().addSelectionObserver(selectionObserver);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        log.info("TableUpdate");
+        if (arg instanceof DataProviderEvent) {
+            DataProviderEvent event = (DataProviderEvent) arg;
+            try {
+                if (event.getEventType() == DataProviderEvent.EVENT_TYPE_NEW) {
+                    getTableWidget().addRowObject(event.getNewEntity());
+                } else if (event.getEventType() == DataProviderEvent.EVENT_TYPE_UPDATE) {
+                    getTableWidget().replaceRowObject(event.getOldEntity(), event.getNewEntity(), null);
+                } else if (event.getEventType() == DataProviderEvent.EVENT_TYPE_DELETE) {
+                    getTableWidget().removeRowObject(event.getOldEntity());
+                }
+                getTableWidget().getTable().requestFocusInWindow();
+            } catch (Exception ex) {
+                log.error("Error updating table", ex);
+            }
+        }
+
     }
 
     //    public Object setSelection(Object selection, Observer observer) {
@@ -229,26 +254,5 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
                 dataWorker = null;
             }
         }
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        log.info("TableUpdate");
-        if (arg instanceof DataProviderEvent) {
-            DataProviderEvent event = (DataProviderEvent) arg;
-            try {
-                if (event.getEventType() == DataProviderEvent.EVENT_TYPE_NEW) {
-                    getTableWidget().addRowObject(event.getNewEntity());
-                } else if (event.getEventType() == DataProviderEvent.EVENT_TYPE_UPDATE) {
-                    getTableWidget().replaceRowObject(event.getOldEntity(), event.getNewEntity(), null);
-                } else if (event.getEventType() == DataProviderEvent.EVENT_TYPE_DELETE) {
-                    getTableWidget().removeRowObject(event.getOldEntity());
-                }
-                getTableWidget().getTable().requestFocusInWindow();
-            } catch (Exception ex) {
-                log.error("Error updating table", ex);
-            }
-        }
-
     }
 }

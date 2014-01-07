@@ -16,7 +16,6 @@
 
 package cz.req.ax;
 
-import com.jhlabs.image.BlurFilter;
 import cz.req.ax.command.ClosePageCommand;
 import cz.req.ax.components.BetterTab;
 import cz.req.ax.components.BetterTabListener;
@@ -29,6 +28,7 @@ import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.effect.BufferedImageOpEffect;
 import org.jdesktop.jxlayer.plaf.ext.LockableUI;
+import org.jdesktop.swingx.image.ColorTintFilter;
 import org.springframework.util.Assert;
 import org.valkyriercp.application.ApplicationPage;
 import org.valkyriercp.application.ApplicationWindowConfigurer;
@@ -84,7 +84,7 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
 
     @Override
     protected JComponent createWindowContentPane() {
-        lockableUI = new LockableUI(new BufferedImageOpEffect(new BlurFilter()));
+        lockableUI = new LockableUI(new BufferedImageOpEffect(new ColorTintFilter(Color.WHITE, 0.5f)));
         container = new JPanel(new BorderLayout());
         tabPane.setCloseAction(getClosePageCommand().getActionAdapter());
         tabPane.addBetterTabListener(new BetterTabListener() {
@@ -209,7 +209,6 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
 
     @Override
     protected ApplicationWindowConfigurer initWindowConfigurer() {
-
         AxApplicationSettings settings = ValkyrieRepository.getInstance().getBean(AxApplicationSettings.class);
         return new AxApplicationWindowConfigurer(this, settings);
     }
@@ -232,13 +231,6 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
         } else {
             super.prepareWindowForView(windowControl, configurer);
         }
-    }
-
-    @Override
-    protected JComponent createStatusBarControl() {
-        JComponent c = getAdvisor().getStatusBar().getControl();
-        c.setBorder(null);
-        return c;
     }
 
     protected ActionCommand getClosePageCommand() {
@@ -274,7 +266,7 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
     }
 
     public void setLocked(boolean locked) {
-        log.info("layer locked=" + locked);
+        //log.info("layer locked=" + locked);
         lockableUI.setLocked(locked);
         layer.revalidate();
         layer.repaint();

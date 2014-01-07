@@ -44,8 +44,6 @@ public class AxApplicationNaviPage extends AxApplicationPage {
         if (getPageDescriptor() instanceof AxApplicationPageDescriptor) {
             AxApplicationNaviPageDescriptor pageDescriptor = (AxApplicationNaviPageDescriptor) getPageDescriptor();
             return pageDescriptor.getControl();
-
-
 //            JXTaskPaneContainer taskContainer = new JXTaskPaneContainer();
 //            taskContainer.setBackground(Color.WHITE);
 //            for (Object object : pageDescriptor.getNavigation()) {

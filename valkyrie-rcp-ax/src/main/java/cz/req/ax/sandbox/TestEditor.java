@@ -24,8 +24,12 @@ import cz.req.ax.widget.editor.AxEditor;
 import cz.req.ax.widget.table.AxLookupBoxBinding;
 import cz.req.ax.widget.table.AxTableDataProvider;
 import cz.req.ax.widget.table.AxTableDescription;
+import cz.req.ax.widget.table.AxTableWidget;
 import org.valkyriercp.form.AbstractForm;
+import org.valkyriercp.widget.table.glazedlists.GlazedListTableWidget;
 
+import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +63,10 @@ public class TestEditor extends AxEditor {
 
             @Override
             public List getList(Object criteria) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                }
                 return list;
             }
         });
@@ -67,12 +75,17 @@ public class TestEditor extends AxEditor {
     @Override
     public void createWidget() {
         super.createWidget();
-
+        GlazedListTableWidget tableWidget = ((AxTableWidget) getMaster()).getTableWidget();
+        String name = tableWidget.getTable().getColumnName(1);
+        TableColumn column = tableWidget.getTable().getColumn(name);
     }
 
     @Override
     public void initTable(AxTableDescription description) {
-        description.add("string");
+        description.add("string", SortOrder.ASCENDING);
+        description.add("date", 80);
+        description.add("enumera", 40);
+        description.add("numberDecimal");
     }
 
     @Override

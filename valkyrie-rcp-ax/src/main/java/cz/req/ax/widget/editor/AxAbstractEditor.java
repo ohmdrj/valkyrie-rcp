@@ -21,6 +21,8 @@ import cz.req.ax.widget.AxDataWidget;
 import org.springframework.util.Assert;
 import org.valkyriercp.widget.editor.provider.MaximumRowsExceededException;
 
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;

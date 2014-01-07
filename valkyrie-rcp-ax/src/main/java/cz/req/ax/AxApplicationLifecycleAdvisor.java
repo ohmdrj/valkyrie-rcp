@@ -16,8 +16,6 @@
 
 package cz.req.ax;
 
-import cz.req.ax.flow.ApplicationWindowManager;
-import org.valkyriercp.application.ApplicationWindow;
 import org.valkyriercp.application.StatusBar;
 import org.valkyriercp.application.config.support.DefaultApplicationLifecycleAdvisor;
 import org.valkyriercp.command.support.CommandGroup;
@@ -25,52 +23,16 @@ import org.valkyriercp.command.support.CommandGroup;
 /**
  * @author Ondrej Burianek
  */
-public class AxApplicationLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor implements ApplicationWindowManager {
+public class AxApplicationLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
 
     protected org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
-    protected String navigationBeanName;
-
-    public void setNavigationBeanName(String navigationBeanName) {
-        this.navigationBeanName = navigationBeanName;
-    }
-
-    @Override
-    public ApplicationWindow getWindow() {
-        //MIG
-        throw new UnsupportedOperationException();
-//        return getApplication().getActiveWindow();
-    }
-
-    @Override
-    public ApplicationWindow openWindow(String pageId) {
-        //MIG
-        throw new UnsupportedOperationException();
-//        getApplication().openWindow(pageId);
-//        return getOpeningWindow();
-    }
-
-    //MIG
-//    public void setCommandsDefinitions(String commandsDefinitions) {
-//        super.setWindowCommandManagerBeanName("commandManager");
-//        super.setWindowCommandBarDefinitions(commandsDefinitions);
-//    }
-
-    @Override
-    public CommandGroup getMenuBarCommandGroup() {
-        CommandGroup commandGroup = super.getMenuBarCommandGroup();
-        return commandGroup;
-    }
 
     @Override
     public StatusBar getStatusBar() {
-        return super.getStatusBar();
+        return new AxStatusBar();
     }
 
-    //    public CommandGroup getWindowNavigation() {
-//        return getWindowNavigation(null);
-//    }
     public CommandGroup getNavigation(String beanName) {
-        //MIG
         throw new UnsupportedOperationException();
 ////        ConfigurableListableBeanFactory naviBeanFactory = getCommandBarFactory();
 //        if (beanName != null && naviBeanFactory.containsBean(beanName)) {

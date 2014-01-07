@@ -85,6 +85,14 @@ public class TestForm extends AxWidget {
         };
         formFactory.getForm().setFormObject(TestItem.itemsList.get(0));
         addRow(formFactory.getForm());
+//        TableLookupBox lookupBox = new TableLookupBox(new AxDataProvider(TestItem.class) {
+//            @Override
+//            public List getList(Object criteria) {
+//                return TestItem.itemsList;
+//            }
+//        }, "string");
+//        lookupBox.getTableDescription().add("string", SortOrder.ASCENDING).add("date").add("numberDecimal");
+//        addRow(lookupBox);
     }
 
 }

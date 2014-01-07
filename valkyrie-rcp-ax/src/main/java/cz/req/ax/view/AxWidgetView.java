@@ -61,7 +61,9 @@ public class AxWidgetView extends WidgetView {
                 restartWidget();
             }
         }), BorderLayout.EAST);
-        JPanel viewPanel = (JPanel) super.createControl();
+//        JPanel viewPanel = (JPanel) super.createControl();
+        JPanel viewPanel = new JPanel(new BorderLayout());
+        viewPanel.add(getWidget().getComponent(), BorderLayout.CENTER);
         viewPanel.add(titlePanel, BorderLayout.NORTH);
         return viewPanel;
     }
@@ -80,6 +82,7 @@ public class AxWidgetView extends WidgetView {
         }
         viewPanel.add(component, BorderLayout.CENTER);
         viewPanel.validate();
+
     }
 
     @Override
