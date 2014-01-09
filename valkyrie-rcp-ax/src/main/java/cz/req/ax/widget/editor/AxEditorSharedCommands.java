@@ -95,7 +95,7 @@ public class AxEditorSharedCommands extends SharedCommandsSupport {
     //TODO Rename Open??
     @Override
     public void doDetail() {
-        if (master.getSelection() == null) {
+        if (master.getValue() == null) {
             return;
         }
         //TODO Open detail?

@@ -16,18 +16,17 @@
 
 package cz.req.ax.data;
 
-import java.util.Observer;
-
 /**
  * @author Ondrej Burianek
  */
 public interface DataSelectionAware {
 
+    public void clearSelection();
+
     public Object getSelection();
 
     public Object setSelection(Object selected);
 
-    public Object setSelection(Object selected, Observer observer);
+//    public Object setSelection(Object selected, Observer observer);
 
-    public void clearSelection();
 }

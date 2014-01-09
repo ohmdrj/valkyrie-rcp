@@ -16,10 +16,14 @@
 
 package cz.req.ax.data;
 
+import cz.thickset.utils.IdObject;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.valkyriercp.widget.editor.provider.AbstractDataProvider;
 import org.valkyriercp.widget.editor.provider.DataProviderEvent;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -84,9 +88,28 @@ public abstract class AxDataProvider extends AbstractDataProvider implements Dat
         return baseObject;
     }
 
-    //TODO remove?
-    public Object checkDetailObject(Object baseObject) {
-        return loadDetailObject(baseObject);
+    public Object[] filterCollection(Collection colect, Object[] model) {
+        if (colect == null || model == null || colect.isEmpty() || model.length == 0) {
+            return null;
+        }
+        if (!IdObject.class.isAssignableFrom(model[0].getClass())) {
+            return model;
+        }
+        try {
+            HashMap map = new HashMap(colect.size());
+            for (Object obj : colect) {
+                map.put(((IdObject) obj).getId(), obj);
+            }
+            ArrayList list = new ArrayList(model.length);
+            for (Object obj : model) {
+                Object dup = map.get(((IdObject) obj).getId());
+                if (dup != null) list.add(dup);
+            }
+            return list.size() == 0 ? null : list.toArray();
+        } catch (Exception ex) {
+            log.error("Error filtering collection by model " + model, ex);
+            return model;
+        }
     }
 
     @Override

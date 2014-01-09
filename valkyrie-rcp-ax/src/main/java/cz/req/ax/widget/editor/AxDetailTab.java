@@ -71,7 +71,7 @@ public class AxDetailTab extends AxAbstractDetail {
         if (object == null) {
             getDetailForm().setFormObject(null);
         } else {
-            object = getDataProvider().checkDetailObject(object);
+            object = getDataProvider().getDetailObject(object, false);
             if (object.getClass().isAssignableFrom(getDataProvider().getDataIdentity().getDataClass())) {
                 getDetailForm().setFormObject(object);
             }

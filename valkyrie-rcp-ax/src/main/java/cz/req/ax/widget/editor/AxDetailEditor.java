@@ -92,10 +92,6 @@ public class AxDetailEditor extends AxAbstractDetail implements Focussable {
 //    }
     @Override
     public void setDetailObject(Object object) throws CloseCanceled {
-//        Object selectedRowObject = getValue();
-//        if (!forceLoad && (rowObject == selectedRowObject)) {
-//            return true;
-//        }
         if (object == null) {
             log.info("detail null");
         } else if (object instanceof Object[]) {
@@ -109,7 +105,6 @@ public class AxDetailEditor extends AxAbstractDetail implements Focussable {
         }
         if (object == null || object instanceof Object[]) {
             getDetailForm().setEnabled(false);
-//            getDetailForm().setFormObject(null);
             getUpdateCommand().setEnabled(false);
         } else {
             getDetailForm().setEnabled(true);

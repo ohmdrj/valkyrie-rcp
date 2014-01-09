@@ -29,24 +29,24 @@ public class AxDetailDialog extends AxAbstractDetail {
     private AxFormWidget formCreate;
     private AxFormWidget formUpdate;
 
+    public AxFormWidget getFormCreate() {
+        return formCreate;
+    }
+
     public void setFormCreate(AxFormWidget formCreate) {
         delWidget(this.formCreate);
         this.formCreate = formCreate;
         addWidget(formCreate);
     }
 
+    public AxFormWidget getFormUpdate() {
+        return formUpdate;
+    }
+
     public void setFormUpdate(AxFormWidget formUpdate) {
         delWidget(this.formUpdate);
         this.formUpdate = formUpdate;
         addWidget(formUpdate);
-    }
-
-    public AxFormWidget getFormCreate() {
-        return formCreate;
-    }
-
-    public AxFormWidget getFormUpdate() {
-        return formUpdate;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class AxDetailDialog extends AxAbstractDetail {
         if (object == null) {
             getDetailForm().setFormObject(null);
         } else {
-            object = getDataProvider().checkDetailObject(object);
+            object = getDataProvider().getDetailObject(object, false);
             if (object.getClass().isAssignableFrom(getDataProvider().getDataIdentity().getDataClass())) {
                 getDetailForm().setFormObject(object);
             }

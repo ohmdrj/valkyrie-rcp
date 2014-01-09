@@ -553,7 +553,7 @@ public abstract class AxLookupEditorBinding extends CustomBinding {
 
                             @Override
                             protected boolean onSelectNone() {
-                                getDataWidget().getMaster().clearSelection();
+                                getDataWidget().getMaster().setValue(null);
                                 return super.onSelectNone();
                             }
 
@@ -596,7 +596,7 @@ public abstract class AxLookupEditorBinding extends CustomBinding {
      * @return <code>true</code> if successful.
      */
     protected boolean onFinish() {
-        setValue(getDataWidget().getMaster().getSelection(), false);
+        setValue(getDataWidget().getValue(), false);
         return true;
     }
 

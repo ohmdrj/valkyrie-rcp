@@ -37,6 +37,9 @@ public class TestItem implements Comparable<TestItem> {
         itemsList.add(new TestItem("Cenax"));
         itemsList.add(new TestItem("Cexar"));
         itemsList.add(new TestItem("Celia"));
+        for (int i = 0; i < 50; i++) {
+            itemsList.add(new TestItem("Test" + i));
+        }
     }
 
     Date date;

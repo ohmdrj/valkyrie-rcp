@@ -100,7 +100,7 @@ public class TableLookupBoxAdapter {
 
             @Override
             protected boolean onFinish() {
-                Object selection = getTableWidget().getSelection();
+                Object selection = getTableWidget().getValue();
                 if (selection == null) {
                     valueModel.setValue(null);
                 } else if (dataProvider.getDataIdentity().getDataClass().isAssignableFrom(selection.getClass())) {

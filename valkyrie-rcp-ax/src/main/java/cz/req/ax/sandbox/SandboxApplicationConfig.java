@@ -60,7 +60,7 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
         pageDescriptor.addGroup("Editors").addView(testEditor());
         pageDescriptor.addGroup("Forms").addView(testForm(), testAutocomplete());
         pageDescriptor.addGroup("Views").addView(testView(), testView1(), testView2(), testView3());
-        pageDescriptor.setViewDescriptor(testForm());
+        pageDescriptor.setViewDescriptor(testEditor());
         return pageDescriptor;
     }
 

@@ -26,7 +26,10 @@ import org.valkyriercp.widget.editor.provider.DataProviderEvent;
 import org.valkyriercp.widget.editor.provider.DataProviderListener;
 import org.valkyriercp.widget.table.glazedlists.GlazedListTableWidget;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -65,16 +68,16 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
         return tableDescription;
     }
 
-    public void setTableDescription(AxTableDescription tableDescription) {
-        this.tableDescription = tableDescription;
-    }
-
     public void setTableDescription(String... columns) {
         AxTableDescription td = new AxTableDescription(getDataProvider());
         for (String string : columns) {
             td.add(string);
         }
         setTableDescription(td);
+    }
+
+    public void setTableDescription(AxTableDescription tableDescription) {
+        this.tableDescription = tableDescription;
     }
 
     public GlazedListTableWidget getTableWidget() {
@@ -122,19 +125,24 @@ public class AxTableWidget extends AxAbstractMaster implements DataCollectionAwa
 
     @Override
     public void setDataCollection(Collection data) {
-        clearSelection();
         if (data == null || data.isEmpty()) {
             getTableWidget().setRows(Collections.EMPTY_LIST);
         } else {
-//            Comparator comparator = getTableDescription().getDefaultComparator();
-//            if (comparator == null) {
+            JScrollPane scrollPane = (JScrollPane) getTableWidget().getComponent();
+            Point viewPosition = scrollPane.getViewport().getViewPosition();
+            Object[] previous = getTableWidget().getSelectedRows();
             getTableWidget().setRows(data);
-//            } else {
-//                ArrayList list = new ArrayList(data);
-//                Collections.sort(list, comparator);
-//                getTableWidget().setRows(list);
-//            }
+            previous = getDataProvider().filterCollection(data, previous);
+            if (previous != null) {
+                getTableWidget().addSelection(previous, null);
+                //getTableWidget().scrollToSelectedRow();
+            }
+            scrollPane.getViewport().setViewPosition(viewPosition);
         }
+    }
+
+    protected Object[] hookDataSelection(Collection data, Object[] select) {
+        return select;
     }
 
     @Override

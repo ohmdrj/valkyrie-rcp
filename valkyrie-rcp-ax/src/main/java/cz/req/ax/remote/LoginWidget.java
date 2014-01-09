@@ -110,7 +110,7 @@ public class LoginWidget extends AxEditorWidget<AxAbstractDetail> {
     }
 
     protected void doConnect() {
-        Object selection = getMaster().getSelection();
+        Object selection = getMaster().getValue();
         if (selection instanceof ConnectionItem) {
             ConnectionItem connectionItem = (ConnectionItem) selection;
             SwingUtilities.invokeLater(new ConnectionThread(connectionItem));

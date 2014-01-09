@@ -21,8 +21,6 @@ import cz.req.ax.widget.AxDataWidget;
 import org.springframework.util.Assert;
 import org.valkyriercp.widget.editor.provider.MaximumRowsExceededException;
 
-import javax.swing.border.LineBorder;
-import java.awt.*;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -35,19 +33,19 @@ import java.util.Observer;
 public class AxAbstractEditor<M extends AxAbstractMaster, D extends AxAbstractDetail> extends AxDataWidget
         implements DetailSupport {
 
-    AxEditorSharedCommands editorSharedCommands;
     protected Observer selectionObserver;
     protected AxEditorToolbar toolbar;
     protected M master;
     protected D detail;
+    AxEditorSharedCommands editorSharedCommands;
 
     public AxAbstractEditor() {
         editorSharedCommands = new AxEditorSharedCommands();
         selectionObserver = new Observer() {
 
             @Override
-            public void update(Observable o, Object newObject) {
-                setSelection(newObject);
+            public void update(Observable o, Object object) {
+                afterSelection(object);
             }
         };
     }
@@ -60,13 +58,10 @@ public class AxAbstractEditor<M extends AxAbstractMaster, D extends AxAbstractDe
 
     @Override
     public void createWidget() {
-//        Assert.notNull(AxApp.applicationConfig(), "applicationConfig is null... not AutoWired!");
         if (getDataProvider() == null) {
             log.warn("Missing DataProvider!!!");
         }
-
         editorSharedCommands.setDataProvider(getDataProvider());
-        //editorSharedCommands.setCommandConfigurer(AxApp.applicationConfig().commandConfigurer());
         editorSharedCommands.setMaster(master);
         editorSharedCommands.setDetail(detail);
         setSharedCommands(editorSharedCommands);
@@ -80,24 +75,26 @@ public class AxAbstractEditor<M extends AxAbstractMaster, D extends AxAbstractDe
         if (detail != null) {
             addRow(detail);
         }
-        //TODO Detektive, je toto nutne?
-        setSelection(null);
     }
 
     public Object getCriteriaFromString(String textFieldValue) {
         return textFieldValue;
     }
 
-    public void setSelection(Object object) {
+    public void setValue(Object object) {
+        super.setValue(object);
+        getMaster().setValue(object);
+    }
+
+    public void afterSelection(Object object) {
         if (getDetail() == null) {
             return;
         }
         try {
             getDetail().setDetailObject(object);
-            getMaster().setSelection(object, null);
         } catch (AxAbstractDetail.CloseCanceled ex) {
             log.warn("canceled!");
-            getMaster().setSelection(getMaster().getSelection(), selectionObserver);
+            //getMaster().setSelection(getMaster().getSelection(), selectionObserver);
         }
     }
 
@@ -159,7 +156,7 @@ public class AxAbstractEditor<M extends AxAbstractMaster, D extends AxAbstractDe
 
     @Override
     public void onAboutToHide() {
-        setSelection(null);
+        setValue(null);
         super.onAboutToHide();
     }
 

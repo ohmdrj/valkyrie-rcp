@@ -19,7 +19,6 @@ package cz.req.ax.widget.editor;
 import cz.req.ax.data.AxDataProvider;
 import cz.req.ax.data.DataFilterAware;
 import cz.req.ax.data.DataProviderAware;
-import cz.req.ax.data.DataSelectionAware;
 import cz.req.ax.widget.AxDataWidget;
 import cz.req.ax.widget.AxMasterCommandAdapter;
 import org.valkyriercp.command.support.AbstractCommand;
@@ -34,7 +33,7 @@ import java.util.Observer;
  * @author Ondrej Burianek
  */
 public abstract class AxAbstractMaster extends AxDataWidget
-        implements DataProviderAware, DataSelectionAware, DataFilterAware, DataProviderListener {
+        implements DataProviderAware, /*DataSelectionAware,*/ DataFilterAware, DataProviderListener {
 
     AxMasterCommandAdapter commandAdapter = new AxMasterCommandAdapter();
 
@@ -51,21 +50,21 @@ public abstract class AxAbstractMaster extends AxDataWidget
 
     public abstract void clearData();
 
-    public boolean hasSelection() {
-        return getSelection() != null;
-    }
+//    public boolean hasSelection() {
+//        return getSelection() != null;
+//    }
 
-    @Override
-    public void clearSelection() {
-        setSelection(null, null);
-    }
-
-    @Override
-    public Object getSelection() {
-        return getValue();
-    }
-
-    public Object[] getSelections() {
+//    @Override
+//    public void clearSelection() {
+//        setSelection(null, null);
+//    }
+//
+//    @Override
+//    public Object getSelection() {
+//        return getValue();
+//    }
+//
+    public Object[] getValues() {
         Object value = getValue();
         if (value == null) {
             return null;
@@ -75,36 +74,16 @@ public abstract class AxAbstractMaster extends AxDataWidget
         }
         return new Object[]{value};
     }
+//
+//    public Object setSelection(Object selection) {
+//        setValue(selection);
+//        return selection;
+//    }
 
-    @Override
-    public Object setSelection(Object selection) {
-        return setSelection(selection, null);
-    }
-
-    @Override
-    public Object setSelection(Object selection, Observer observer) {
-        // return when selecting multiple rows
-        if (selection instanceof Object[]) {
-            return null;
-        }
-        doSelect(selection, observer);
-        return selection;
-
-//        int ret = doSelect(selection, observer);
-//        if (selection == null || hasSelection()) {
-//            return ret;
-//        }
-//        ret = doSelect(selection, observer);
-//        if (hasSelection()) {
-//            return ret;
-//        }
-//        getTableWidget().getTextFilterField().setText("");
-//        return doSelect(selection, observer);
-    }
-
-    public void doSelect(Object selection, Observer observer) {
-        setValue(selection);
-    }
+//    @Override
+//    public Object setSelection(Object selection, Observer observer) {
+////        getTableWidget().getTextFilterField().setText("");
+//    }
 
     public AxMasterCommandAdapter getCommandAdapter() {
         return commandAdapter;

@@ -97,7 +97,7 @@ public class AxEditorBinder extends AxAbstractLookupBinder {
                 if (search.getClass().equals(dataEditor.getDataProvider().getDataIdentity().getDataClass())) {
 //                    result = dataEditor.setSelectedSearch(dataEditor.getDefaultCriteria());
                     result = dataEditor.setSelectedSearch(null);
-                    dataEditor.setSelection(search);
+                    dataEditor.setValue(search);
                 } else {
                     result = dataEditor.setSelectedSearch(search);
                 }
