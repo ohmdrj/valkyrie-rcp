@@ -38,6 +38,7 @@ public class TestForm extends AxWidget {
                 builder.addPropertyWithLabel("string");
                 builder.addPropertyWithLabel("numberInteger");
                 builder.addPropertyWithLabel("numberDecimal");
+                builder.addBindingWithLabel("color", new ColorBinding(builder.getFormModel(),"color"));
 
                 builder.addComponentWithLabel("fieldText", fieldText);
                 builder.addComponentWithLabel("fieldDecimal", fieldDecimal);

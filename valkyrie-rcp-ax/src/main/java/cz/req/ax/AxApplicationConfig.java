@@ -31,6 +31,7 @@ import cz.req.ax.remote.LoginWidget;
 import cz.req.ax.support.AxExceptionHandler;
 import cz.req.ax.support.ThicksetApplicationDescriptor;
 import cz.req.ax.view.AxViewDescriptor;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.convert.ConversionService;
 import org.springframework.binding.convert.service.DefaultConversionService;
@@ -82,6 +83,7 @@ import org.valkyriercp.factory.*;
 import org.valkyriercp.form.FormModelFactory;
 import org.valkyriercp.form.binding.BinderSelectionStrategy;
 import org.valkyriercp.form.binding.BindingFactoryProvider;
+import org.valkyriercp.form.binding.jodatime.JodaLocalDateBinder;
 import org.valkyriercp.form.binding.swing.NumberBinder;
 import org.valkyriercp.form.binding.swing.ScrollPaneBinder;
 import org.valkyriercp.form.binding.swing.SwingBinderSelectionStrategy;
@@ -145,7 +147,8 @@ public abstract class AxApplicationConfig implements ApplicationConfig {
     @PostConstruct
     protected void postInit() {
         UIManager.put("JXDatePicker.arrowIcon", new ImageIcon(imageSource().getImage("selectDate.icon")));
-        UIManager.put("LookupBox.arrowIcon", new ImageIcon(imageSource().getImage("selectLookup.icon")));
+        UIManager.put("TableLookupBox.arrowIcon", new ImageIcon(imageSource().getImage("selectLookup.icon")));
+        UIManager.put("ColorBox.arrowIcon", new ImageIcon(imageSource().getImage("selectColor.icon")));
     }
 
     public ApplicationContext applicationContext() {
@@ -399,6 +402,7 @@ public abstract class AxApplicationConfig implements ApplicationConfig {
         binderSelectionStrategy.registerBinderForPropertyType(BigDecimal.class, new NumberBinder(BigDecimal.class));
         binderSelectionStrategy.registerBinderForPropertyType(Date.class, new JXDatePickerDateFieldBinder());
         binderSelectionStrategy.registerBinderForPropertyType(Timestamp.class, new JXDatePickerDateFieldBinder());
+        binderSelectionStrategy.registerBinderForPropertyType(LocalDate.class, new JodaLocalDateBinder());
     }
 
     @Bean

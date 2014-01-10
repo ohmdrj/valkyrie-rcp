@@ -16,6 +16,9 @@
 
 package cz.req.ax.sandbox;
 
+import org.joda.time.LocalDate;
+
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -43,12 +46,14 @@ public class TestItem implements Comparable<TestItem> {
     }
 
     Date date;
+    LocalDate localDate;
     String string;
     TestItem item;
     List<TestItem> childs;
     Integer numberInteger;
     BigDecimal numberDecimal;
     TestEnum1 enumera;
+    Color color;
 
     public TestItem() {
     }
@@ -56,6 +61,7 @@ public class TestItem implements Comparable<TestItem> {
     public TestItem(String string) {
         this.string = string;
         this.date = new Date();
+        this.localDate = new LocalDate();
         this.numberInteger = (int) Math.random() * 1000;
         this.numberDecimal = new BigDecimal(Math.random() * 1000d);
         this.numberDecimal.setScale(4, RoundingMode.HALF_EVEN);
@@ -68,6 +74,14 @@ public class TestItem implements Comparable<TestItem> {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public String getString() {
@@ -116,6 +130,14 @@ public class TestItem implements Comparable<TestItem> {
 
     public void setEnumera(TestEnum1 enumera) {
         this.enumera = enumera;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override

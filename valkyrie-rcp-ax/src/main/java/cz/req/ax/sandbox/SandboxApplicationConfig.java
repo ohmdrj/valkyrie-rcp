@@ -125,6 +125,7 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
         binderSelectionStrategy.registerBinderForPropertyType(Integer.class, new NumberBinder(Integer.class));
         binderSelectionStrategy.registerBinderForPropertyType(TestEnum2.class, enumerationBinder());
         binderSelectionStrategy.registerBinderForPropertyType(TestEnum1.class, enumerationBinder());
+//        binderSelectionStrategy.registerBinderForPropertyType(Color.class, colorBinder());
     }
 
     @Bean

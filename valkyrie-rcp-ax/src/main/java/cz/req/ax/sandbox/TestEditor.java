@@ -42,7 +42,7 @@ public class TestEditor extends AxEditor {
     ArrayList<TestItem> list = new ArrayList<TestItem>(TestItem.itemsList);
 
     public TestEditor() {
-        //setEditorType(EditorType.NEWTAB);
+//        setEditorType(EditorType.NEWTAB);
         setDataProvider(new AxDataProvider(TestItem.class) {
 
             @Override
@@ -163,6 +163,8 @@ public class TestEditor extends AxEditor {
         }));
         builder.addRowGap();
         builder.addPropertyWithLabel("date");
+        builder.addRowGap();
+        builder.addPropertyWithLabel("localDate");
         builder.addRowGap();
         builder.addPropertyWithLabel("string");
         builder.addRowGap();

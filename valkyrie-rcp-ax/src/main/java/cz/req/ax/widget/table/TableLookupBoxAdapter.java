@@ -56,7 +56,7 @@ public class TableLookupBoxAdapter {
     public void insLookupListener(JComponent component) {
         if (component instanceof TableLookupBox) {
             TableLookupBox tableLookupBox = (TableLookupBox) component;
-            tableLookupBox.addLookupListener(new ActionListener() {
+            tableLookupBox.addButtonListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {

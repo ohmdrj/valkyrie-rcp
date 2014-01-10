@@ -16,61 +16,31 @@
 
 package cz.req.ax.widget.table;
 
+import cz.req.ax.components.AbstractBoxedField;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * TableLookupBox
  *
  * @author Ondrej Burianek
  */
-public class TableLookupBox extends JPanel {
-
-    private JComboBox comboBox;
-    private JButton lookupButton;
+public class TableLookupBox extends AbstractBoxedField<JComboBox> {
 
     public TableLookupBox() {
-        this(new JComboBox());
+        super(new JComboBox());
     }
 
-    public TableLookupBox(JComboBox c) {
-        super(new BorderLayout(0, 0));
-        comboBox = c;
-        int add = 1;
-        comboBox.setMinimumSize(new Dimension(comboBox.getMinimumSize().width, comboBox.getMinimumSize().height + add));
-        comboBox.setPreferredSize(new Dimension(comboBox.getPreferredSize().height, comboBox.getPreferredSize().height + add));
-        lookupButton = new JButton();
-        lookupButton.setIcon(UIManager.getIcon("LookupBox.arrowIcon"));
-        lookupButton.setMinimumSize(new Dimension(26, comboBox.getMinimumSize().height + add));
-        lookupButton.setPreferredSize(new Dimension(26, comboBox.getPreferredSize().height + add));
-        add(comboBox, BorderLayout.CENTER);
-        add(lookupButton, BorderLayout.EAST);
-
-        comboBox.addPropertyChangeListener("enabled", new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                lookupButton.setEnabled((Boolean) evt.getNewValue());
-            }
-        });
+    public TableLookupBox(JComboBox component) {
+        super(component);
     }
 
     public JButton getLookupButton() {
-        return lookupButton;
+        return getButton();
     }
 
     public JComboBox getComboBox() {
-        return comboBox;
+        return getComponent();
     }
 
-    public void removeLookupListener(ActionListener l) {
-        lookupButton.removeActionListener(l);
-    }
-
-    public void addLookupListener(ActionListener l) {
-        lookupButton.addActionListener(l);
-    }
 }
