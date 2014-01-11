@@ -42,6 +42,16 @@ public class AxUtils {
     static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AxUtils.class);
     protected static File lastDir = new File(System.getProperty("user.home"));
 
+    public static String fixDisplayName(String string, String id) {
+        if ("displayName".equals(string)) {
+            return id;
+        }
+        if ("none".equals(string) || "false".equals(string)) {
+            return null;
+        }
+        return string;
+    }
+
     public static String lowerCaseFirst(String string) {
         if (string == null) {
             return null;

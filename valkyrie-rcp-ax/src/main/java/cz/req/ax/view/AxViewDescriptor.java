@@ -17,6 +17,7 @@
 package cz.req.ax.view;
 
 import cz.req.ax.AxApp;
+import cz.req.ax.AxUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.valkyriercp.application.ApplicationWindow;
 import org.valkyriercp.application.PageComponent;
@@ -67,6 +68,11 @@ public class AxViewDescriptor extends AbstractViewDescriptor {
     public AxViewDescriptor(String id, Widget widget) {
         super(id);
         setWidget(widget);
+    }
+
+    @Override
+    public String getDisplayName() {
+        return AxUtils.fixDisplayName(super.getDisplayName(), getId());
     }
 
     public void setView(View view) {

@@ -3,6 +3,7 @@ package cz.req.ax;
 import cz.req.ax.view.AxView;
 import cz.req.ax.view.AxWidgetView;
 import cz.req.ax.widget.AxWidget;
+import org.valkyriercp.application.ApplicationPage;
 import org.valkyriercp.application.PageComponent;
 import org.valkyriercp.application.PageComponentContext;
 import org.valkyriercp.application.support.DefaultStatusBar;
@@ -26,6 +27,23 @@ public class AxStatusBar extends DefaultStatusBar {
         JComponent control = super.createControl();
         control.setBorder(null);
         return control;
+    }
+
+    public void updateActiveMessage() {
+        ApplicationPage page = getApplicationConfig().windowManager().getActiveWindow().getPage();
+        StringBuilder sb = new StringBuilder();
+        if (page != null) {
+            sb.append(page.getClass().getSimpleName());
+            sb.append(":");
+            sb.append(page.getId());
+            if (page.getActiveComponent() != null) {
+                sb.append(" | ");
+                sb.append(page.getActiveComponent().getClass().getSimpleName());
+                sb.append(":");
+                sb.append(page.getActiveComponent().getId());
+            }
+        }
+        setMessage(sb.toString());
     }
 
     @Override

@@ -33,7 +33,7 @@ public class BetterTab {
     private JComponent component;
     private PageDescriptor descriptor;
     private ApplicationPage page;
-    private String displayName;
+//    private String displayName;
 
     public BetterTab(PageDescriptor descriptor, ApplicationPage page) {
         this.descriptor = descriptor;
@@ -41,16 +41,13 @@ public class BetterTab {
     }
 
     public String getDisplayName() {
-        displayName = descriptor.getDisplayName();
-        if ("displayName".equals(displayName)) {
-            displayName = descriptor.getId();
-        }
+        String displayName = descriptor.getDisplayName();
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    /*public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
+    }*/
 
     public boolean isSingleton() {
         return isSingleton(descriptor);

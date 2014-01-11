@@ -19,6 +19,7 @@ package cz.req.ax.sandbox;
 import cz.req.ax.AxApplicationConfig;
 import cz.req.ax.AxApplicationLauncher;
 import cz.req.ax.AxApplicationNaviPageDescriptor;
+import cz.req.ax.AxApplicationPageDescriptor;
 import cz.req.ax.data.EnumerationBinder;
 import cz.req.ax.remote.ConnectionClass;
 import cz.req.ax.remote.ConnectionRegistry;
@@ -62,6 +63,11 @@ public class SandboxApplicationConfig extends AxApplicationConfig {
         pageDescriptor.addGroup("Views").addView(testView(), testView1(), testView2(), testView3());
         pageDescriptor.setViewDescriptor(testEditor());
         return pageDescriptor;
+    }
+
+    @Bean
+    public PageDescriptor dataPage() {
+        return new AxApplicationPageDescriptor("dataPage",testView());
     }
 
     @Bean

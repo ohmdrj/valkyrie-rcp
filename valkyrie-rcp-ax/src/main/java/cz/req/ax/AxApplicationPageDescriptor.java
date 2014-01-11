@@ -91,13 +91,7 @@ public class AxApplicationPageDescriptor extends AbstractPageDescriptor implemen
 
     @Override
     public String getDisplayName() {
-        if ("displayName".equals(displayTitle)) {
-            return super.getDisplayName();
-        }
-        if ("none".equals(displayTitle) || "false".equals(displayTitle)) {
-            return null;
-        }
-        return displayTitle;
+        return AxUtils.fixDisplayName(super.getDisplayName(), getId());
     }
 
     public Class getPageClass() {

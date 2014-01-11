@@ -16,7 +16,7 @@
 
 package cz.req.ax;
 
-import org.valkyriercp.application.config.ApplicationConfig;
+import org.valkyriercp.application.ApplicationWindow;
 import org.valkyriercp.util.ValkyrieRepository;
 
 /**
@@ -27,8 +27,17 @@ import org.valkyriercp.util.ValkyrieRepository;
 //TODO @Deprecate?
 public class AxApp extends ValkyrieRepository {
 
-    public static ApplicationConfig applicationConfig() {
-        return getInstance().getApplicationConfig();
+    public static AxApplicationConfig applicationConfig() {
+        return (AxApplicationConfig) getInstance().getApplicationConfig();
+    }
+
+    public static AxStatusBar statusBar() {
+        try {
+            ApplicationWindow window = applicationConfig().windowManager().getActiveWindow();
+            return (AxStatusBar) ((AxApplicationWindow) window).getStatusBar();
+        } catch (Exception ex) {
+            return (AxStatusBar) applicationConfig().applicationLifecycleAdvisor().getStatusBar();
+        }
     }
 
 }

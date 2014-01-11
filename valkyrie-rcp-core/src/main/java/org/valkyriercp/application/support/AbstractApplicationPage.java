@@ -367,6 +367,10 @@ public abstract class AbstractApplicationPage extends AbstractControlFactory imp
         addPageComponentListener(sharedCommandTargeter);
     }
 
+    public PageDescriptor getDescriptor() {
+        return descriptor;
+    }
+
     public final void setDescriptor(PageDescriptor descriptor) {
         Assert.notNull(descriptor, "The page's descriptor is required");
         Assert.state(this.descriptor == null,

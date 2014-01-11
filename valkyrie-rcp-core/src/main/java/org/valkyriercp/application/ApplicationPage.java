@@ -9,6 +9,7 @@ public interface ApplicationPage extends ControlFactory {
     ApplicationWindow getWindow();
     boolean close();
     boolean close(PageComponent pageComponent);
+    public PageDescriptor getDescriptor();
     public List<PageComponent> getPageComponents();
     PageComponent getActiveComponent();
     void setActiveComponent(PageComponent pageComponent);

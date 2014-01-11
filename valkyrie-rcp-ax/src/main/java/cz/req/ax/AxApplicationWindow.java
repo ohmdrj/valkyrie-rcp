@@ -49,13 +49,13 @@ import java.awt.*;
 public class AxApplicationWindow extends AbstractApplicationWindow {
 
     protected org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
-    LockableUI lockableUI;
-    JXLayer<JComponent> layer;
-    JPanel container;
     protected CommandGroup commandGroup;
     protected BetterTabbedPane tabPane = new BetterTabbedPane();
     //    protected ArrayList<ApplicationPage> tabList = new ArrayList<ApplicationPage>();
     protected BidiMap singletonCache = new DualHashBidiMap();
+    LockableUI lockableUI;
+    JXLayer<JComponent> layer;
+    JPanel container;
 
     public AxApplicationWindow(int number, ApplicationConfig config) {
         super(number, config);
@@ -63,6 +63,11 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
 
     public AxApplicationWindow(ApplicationConfig config) {
         super(config);
+    }
+
+    public static void setApplicationLocked(boolean locked) {
+        //MIG
+//        ((AxApplicationWindow) Application.instance().getActiveWindow()).setLocked(locked);
     }
 
     @Override
@@ -110,31 +115,30 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
 
     @Override
     protected ApplicationPage createPage(PageDescriptor descriptor) {
-        boolean sigleton = BetterTab.isSingleton(descriptor);
-//        log.info("createPage " + (sigleton ? "singleton" : "unique"));
-        if (sigleton && singletonCache.containsKey(descriptor)) {
+        if (BetterTab.isSingleton(descriptor) && singletonCache.containsKey(descriptor)) {
             // descriptor cached, do not create+add, just return
             return (ApplicationPage) singletonCache.get(descriptor);
         }
 
         AxApp.applicationConfig().applicationObjectConfigurer().configure(descriptor, descriptor.getId());
         ApplicationPage page = super.createPage(descriptor);
+        return createPage(descriptor, page);
+
+    }
+
+    protected ApplicationPage createPage(PageDescriptor descriptor, ApplicationPage page) {
         tabPane.addTab(new BetterTab(descriptor, page));
-        if (sigleton) {
+        if (BetterTab.isSingleton(descriptor)) {
             singletonCache.put(descriptor, page);
         }
         return page;
-
     }
 
     @Override
     public void showPage(String pageId) {
-        showPage(pageId, null);
-    }
-
-    @Override
-    public void showPage(PageDescriptor pageDescriptor) {
-        showPage(pageDescriptor, null);
+        if (pageId != null) {
+            showPage(pageId, null);
+        }
     }
 
     public void showPage(String pageId, Object input) {
@@ -143,15 +147,29 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
         }
     }
 
+    @Override
+    public void showPage(PageDescriptor pageDescriptor) {
+        showPage(pageDescriptor, null);
+    }
+
     public void showPage(PageDescriptor pageDescriptor, Object input) {
         Assert.notNull(pageDescriptor, "pageDescriptor is null");
         ApplicationPage page = createPage(pageDescriptor);
         Assert.notNull(page, "page is null");
-        showPage(page, input);
+        setActivePage(page, input);
+    }
+
+    public void showPage(ApplicationPage page) {
+//        showPage(page, null);
     }
 
     public void showPage(ApplicationPage page, Object input) {
-//        log.info("showPage " + page.getId());
+        page = createPage(page.getDescriptor(), page);
+        Assert.notNull(page, "page is null");
+        setActivePage(page, input);
+    }
+
+    protected void setActivePage(ApplicationPage page, Object input) {
         if (page instanceof AxApplicationPage) {
             ((AxApplicationPage) page).setInput(input);
         }
@@ -190,6 +208,10 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
         if (fireFocusEvents && getPage() instanceof AxApplicationPage) {
             ((AxApplicationPage) getPage()).focusGain();
         }
+//        getPage().getControl().validate();
+//        getPage().getActiveComponent().getControl().validate();
+        //getPage().getControl().repaint();
+        AxApp.statusBar().updateActiveMessage();
     }
 
     public void closePage() {
@@ -197,8 +219,14 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
     }
 
     public void closePage(Object criteria) {
-        tabPane.removeTab(criteria);
-//        singletonCache.removeValue(activePage);
+        BetterTab tab = tabPane.getTab(criteria);
+        tabPane.removeTab(tab);
+        if (tab.getPage() instanceof AxApplicationPage) {
+            AxApplicationPage page = (AxApplicationPage) tab.getPage();
+            if (BetterTab.isSingleton(page.getDescriptor())) {
+                singletonCache.removeValue(page);
+            }
+        }
     }
 
     @Override
@@ -265,19 +293,14 @@ public class AxApplicationWindow extends AbstractApplicationWindow {
         return sb.toString();
     }
 
+    public boolean isLocked() {
+        return lockableUI.isLocked();
+    }
+
     public void setLocked(boolean locked) {
         //log.info("layer locked=" + locked);
         lockableUI.setLocked(locked);
         layer.revalidate();
         layer.repaint();
-    }
-
-    public boolean isLocked() {
-        return lockableUI.isLocked();
-    }
-
-    public static void setApplicationLocked(boolean locked) {
-        //MIG
-//        ((AxApplicationWindow) Application.instance().getActiveWindow()).setLocked(locked);
     }
 }

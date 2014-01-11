@@ -105,9 +105,10 @@ public abstract class AbstractApplicationWindow implements ApplicationWindow, Wi
 
     @Override
     public void showPage(ApplicationPage page) {
-        if (page == null)
+        if (page == null) {
             throw new IllegalArgumentException("page == null");
-
+        }
+        page.getControl();
         if (this.currentApplicationPage == null) {
             this.currentApplicationPage = page;
             getAdvisor().onPreWindowOpen(getWindowConfigurer());

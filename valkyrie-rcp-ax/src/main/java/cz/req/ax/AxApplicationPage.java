@@ -39,20 +39,17 @@ public class AxApplicationPage extends DefaultApplicationPage implements FlowAwa
     }
 
     @Override
-    public String getId() {
-        String id = super.getId();
-        if (getPageDescriptor() instanceof AxApplicationPageDescriptor) {
-            AxApplicationPageDescriptor axDescriptor = (AxApplicationPageDescriptor) getPageDescriptor();
-            if (!axDescriptor.isSingleton() && timestamp == null) {
-                timestamp = System.currentTimeMillis();
-            }
-        }
-        return timestamp == null ? id : id + timestamp;
+    public AxApplicationPageDescriptor getDescriptor() {
+        return (AxApplicationPageDescriptor) super.getDescriptor();
     }
 
     @Override
-    public AxApplicationPageDescriptor getPageDescriptor() {
-        return (AxApplicationPageDescriptor) super.getPageDescriptor();
+    public String getId() {
+        String id = super.getId();
+        if (!getDescriptor().isSingleton() && timestamp == null) {
+            timestamp = System.currentTimeMillis();
+        }
+        return timestamp == null ? id : id + timestamp;
     }
 
     @Override
@@ -74,12 +71,16 @@ public class AxApplicationPage extends DefaultApplicationPage implements FlowAwa
         if (getActiveComponent() != null) {
             close(getActiveComponent());
         }
-        return super.showView(id, input);
+        View view = super.showView(id, input);
+        AxApp.statusBar().updateActiveMessage();
+        return view;
     }
 
     @Override
     public View showView(ViewDescriptor viewDescriptor, Object input) {
-        return super.showView(viewDescriptor, input);
+        View view = super.showView(viewDescriptor, input);
+        AxApp.statusBar().updateActiveMessage();
+        return view;
     }
 
     public void focusLoose() {

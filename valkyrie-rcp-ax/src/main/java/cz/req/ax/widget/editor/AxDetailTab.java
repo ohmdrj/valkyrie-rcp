@@ -19,9 +19,9 @@ package cz.req.ax.widget.editor;
 import cz.req.ax.AxApp;
 import cz.req.ax.AxApplicationPage;
 import cz.req.ax.AxApplicationPageDescriptor;
+import cz.req.ax.AxApplicationWindow;
 import cz.req.ax.view.AxViewDescriptor;
 import cz.req.ax.widget.AxFormWidget;
-import org.valkyriercp.application.ApplicationWindow;
 
 /**
  * AxEditor1Widget
@@ -80,14 +80,16 @@ public class AxDetailTab extends AxAbstractDetail {
 
     @Override
     public void grabFocus() {
-        ApplicationWindow window = AxApp.applicationConfig().windowManager().getActiveWindow();
+
         AxViewDescriptor viewDescriptor = new AxViewDescriptor("testItemView", getFormWidget());
-        AxApplicationPage applicationPage = new AxApplicationPage();
         AxApplicationPageDescriptor pageDescriptor = new AxApplicationPageDescriptor();
-        pageDescriptor.setId("testItemPage");
+        AxApplicationPage applicationPage = new AxApplicationPage();
+        AxApplicationWindow window = (AxApplicationWindow) AxApp.applicationConfig().windowManager().getActiveWindow();
+        pageDescriptor.setId(window.getPage().getId() + "Detail");
         applicationPage.setDescriptor(pageDescriptor);
-        window.showPage(applicationPage);
+        window.showPage(applicationPage, null);
         applicationPage.showView(viewDescriptor);
+
 
         //window.getPage().showView(viewDescriptor);
 //        window.getPage().showView("")

@@ -81,8 +81,7 @@ public class AxWidgetView extends WidgetView {
             ((AxDataWidget)getWidget()).doRefresh();
         }
         viewPanel.add(component, BorderLayout.CENTER);
-        viewPanel.validate();
-
+        viewPanel.revalidate();
     }
 
     @Override

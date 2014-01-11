@@ -47,7 +47,7 @@ public class TestWidget extends AxWidget {
         });
         tableWidget.setTableDescription("string");
         addFull(tableWidget);
-        addRow(new JButton(new AbstractAction("Test") {
+        addRow(new JButton(new AbstractAction("Refresh") {
 
             @Override
             public void actionPerformed(ActionEvent e) {

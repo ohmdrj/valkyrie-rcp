@@ -34,9 +34,9 @@ import java.util.HashMap;
  */
 public class BetterTabbedPane extends JideTabbedPane {
 
+    private final EventListenerListHelper selectionListeners = new EventListenerListHelper(BetterTabListener.class);
     protected org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
     protected HashMap<PageDescriptor, ApplicationPage> singletonCache = new HashMap<PageDescriptor, ApplicationPage>();
-    private final EventListenerListHelper selectionListeners = new EventListenerListHelper(BetterTabListener.class);
     private ArrayList<BetterTab> list = new ArrayList<BetterTab>();
     private BetterTab selected;
 
@@ -119,7 +119,7 @@ public class BetterTabbedPane extends JideTabbedPane {
         }
         if (betterTab.getPage() instanceof AxApplicationPage) {
             AxApplicationPage axpage = (AxApplicationPage) betterTab.getPage();
-            if (!axpage.getPageDescriptor().isClosable()) {
+            if (!axpage.getDescriptor().isClosable()) {
                 return false;
             }
         }
@@ -148,6 +148,8 @@ public class BetterTabbedPane extends JideTabbedPane {
             return;
         }
         setSelectedIndex(index);
+        revalidate();
+        repaint();
         selected = betterTab;
         setSuppressStateChangedEvents(false);
     }
@@ -170,7 +172,6 @@ public class BetterTabbedPane extends JideTabbedPane {
 
         String pageTitle;
         String viewTitle = null;
-        //        String pageSubTitle = null;
         String viewDescription = null;
         Component component;
 
@@ -194,6 +195,12 @@ public class BetterTabbedPane extends JideTabbedPane {
             return newTitle.toString();
         }
 
+        public void setTitle(String title) {
+            throw new UnsupportedOperationException();
+//            pageTitle = title;
+//            update();
+        }
+
         public void update(PageComponent pageComponent) {
             if (pageComponent instanceof View) {
                 View view = (View) pageComponent;
@@ -205,7 +212,7 @@ public class BetterTabbedPane extends JideTabbedPane {
 
         public void update() {
             int tabIndex = indexOfComponent(component);
-            if (tabIndex >= getTabCount()) {
+            if (tabIndex >= getTabCount() | tabIndex < 0) {
                 log.warn("Unable to update index=" + tabIndex + " titles=" + pageTitle + "," + viewTitle + " descri=" + viewDescription);
                 return;
             }
@@ -233,12 +240,6 @@ public class BetterTabbedPane extends JideTabbedPane {
         @Override
         public void componentClosed(PageComponent component) {
             update(component);
-        }
-
-        public void setTitle(String title) {
-            throw new UnsupportedOperationException();
-//            pageTitle = title;
-//            update();
         }
     }
 }

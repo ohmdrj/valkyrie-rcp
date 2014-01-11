@@ -42,7 +42,7 @@ public class TestEditor extends AxEditor {
     ArrayList<TestItem> list = new ArrayList<TestItem>(TestItem.itemsList);
 
     public TestEditor() {
-//        setEditorType(EditorType.NEWTAB);
+        setEditorType(EditorType.NEWTAB);
         setDataProvider(new AxDataProvider(TestItem.class) {
 
             @Override

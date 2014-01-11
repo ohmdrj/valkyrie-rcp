@@ -46,7 +46,7 @@ public class TestView extends AxTitledView {
 
             @Override
             protected void doExecuteCommand() {
-                AxApp.applicationConfig().dialogFactory().showConfirmationDialog("Test");
+                AxApp.applicationConfig().windowManager().getActiveWindow().showPage("dataPage");
             }
         };
 
