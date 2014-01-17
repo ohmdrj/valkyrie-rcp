@@ -40,8 +40,19 @@ public class ColorBox extends AbstractBoxedField<JTextField> {
         super(component);
     }
 
+    public static String convertToString(Color color) {
+        return color == null ? null : "#" + Integer.toHexString(color.getRGB()).substring(2);
+    }
+
+    public static Color convertToColor(String string) {
+        return string == null ? null : Color.decode(string);
+    }
+
     protected void showColorPicker() {
-        setColor(JColorChooser.showDialog(this, "Color picker", getColor()));
+        Color color = JColorChooser.showDialog(this, "Color picker", getColor());
+        if (color != null) {
+            setColor(color);
+        }
     }
 
     public Color getColor() {
@@ -50,8 +61,7 @@ public class ColorBox extends AbstractBoxedField<JTextField> {
 
     public void setColor(Color color) {
         this.color = color;
-        String colorHex = "#" + Integer.toHexString(color.getRGB()).substring(2);
-        getComponent().setText(colorHex);
+        getComponent().setText(convertToString(color));
         panel.setBackground(color);
         for (PropertyChangeListener listener : getChangeMulticaster().getListeners()) {
             listener.propertyChange(new PropertyChangeEvent(this, "color", null, color));

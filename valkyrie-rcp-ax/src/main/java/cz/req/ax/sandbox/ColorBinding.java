@@ -32,9 +32,8 @@ public class ColorBinding extends CustomBinding {
     @Override
     protected void valueModelChanged(Object newValue) {
         if (newValue instanceof String && propertyClass.isAssignableFrom(String.class)) {
-            newValue = Color.decode((String) newValue);
-        }
-        if (newValue instanceof Color && propertyClass.isAssignableFrom(Color.class)) {
+            colorBox.setColor(Color.decode((String) newValue));
+        } else if (newValue instanceof Color && propertyClass.isAssignableFrom(Color.class)) {
             colorBox.setColor((Color) newValue);
         } else {
             colorBox.setColor(Color.WHITE);
@@ -43,10 +42,16 @@ public class ColorBinding extends CustomBinding {
 
     @Override
     protected JComponent doBindControl() {
+        valueModelChanged(getValue());
         colorBox.addChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                controlValueChanged(evt.getNewValue());
+                Color newValue = (Color) evt.getNewValue();
+                if (propertyClass.isAssignableFrom(String.class)) {
+                    controlValueChanged(ColorBox.convertToString(newValue));
+                } else if (propertyClass.isAssignableFrom(Color.class)) {
+                    controlValueChanged(newValue);
+                }
             }
         });
         return colorBox;
