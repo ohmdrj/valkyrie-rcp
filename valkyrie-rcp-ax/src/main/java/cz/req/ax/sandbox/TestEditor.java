@@ -16,6 +16,7 @@
 
 package cz.req.ax.sandbox;
 
+import com.jgoodies.forms.layout.CellConstraints;
 import cz.req.ax.data.AxDataProvider;
 import cz.req.ax.data.AxFormBuilder;
 import cz.req.ax.data.binding.AxTableBinding;
@@ -42,7 +43,7 @@ public class TestEditor extends AxEditor {
     ArrayList<TestItem> list = new ArrayList<TestItem>(TestItem.itemsList);
 
     public TestEditor() {
-        setEditorType(EditorType.NEWTAB);
+//        setEditorType(EditorType.NEWTAB);
         setDataProvider(new AxDataProvider(TestItem.class) {
 
             @Override
@@ -94,44 +95,24 @@ public class TestEditor extends AxEditor {
         final List<String> stringsLst = Arrays.asList(stringsArr);
 
         //TODO autoinitialize?
-        builder.setStandardPreset1();
+        //builder.setStandardPreset1();
+        builder.setStandardPreset2();
 
-        /*AxEditor itemEditor = new AxEditor(getDataProvider()) {
-            @Override
-            public void initForm(AxFormBuilder builder) {
-                builder.addPropertyWithLabel("string");
-                builder.addPropertyWithLabel("date");
-            }
 
+        builder.addPropertyWithLabel("string");
+        builder.addBindingWithLabel("string", new AxLookupBoxBinding(builder.getFormModel(), "item", "string", new AxTableDataProvider(TestItem.class) {
             @Override
-            public void initTable(AxTableDescription description) {
-                description.add("string", "date");
+            public List getList(Object criteria) {
+                return TestItem.itemsList;
             }
-        };
-        /*builder.addBindingWithLabel("item", itemEditor.createBinder("item").bind(builder.getFormModel(),"item",null));*/
-        /*builder.addBindingWithLabel("string", new AxLookupEditorBinding(itemEditor, builder.getFormModel(), "item") {
-            @Override
-            public String getObjectLabel(Object o) {
-                if (o instanceof TestItem) {
-                    return ((TestItem)o).getString();
-                }
-                return "#";
-            }
-
-            @Override
-            protected Object createFilterFromString(String textFieldValue) {
-                return null;
-            }
-        });*/
-
-//        builder.addBindingWithLabel("string", new AxLookupBoxBinding(builder.getFormModel(), "string", "*", new AxTableDataProvider(String.class) {
-//
-//
-//            @Override
-//            public List getList(Object criteria) {
-//                return stringsLst;
-//            }
-//        }));
+        }));
+        builder.addPropertyWithLabel("date");
+        builder.addPropertyWithLabel("localDate");
+        builder.addPropertyWithLabel("numberInteger");
+        builder.addPropertyWithLabel("numberDecimal");
+        builder.addPropertyWithLabel("enumera");
+        builder.addBindingWithLabel("color", new ColorBinding(builder.getFormModel(),"color1"));
+        builder.addBindingWithLabel("color", new ColorBinding(builder.getFormModel(),"color2"));
 
         AxTableDescription tableDesc = new AxTableDescription(TestItem.class);
         tableDesc.add("string", "date");
@@ -154,25 +135,8 @@ public class TestEditor extends AxEditor {
             }
         };
         tableBind.setAllSupported(true);
-        builder.addBindingWithLabel("childs", tableBind);
-        builder.addBindingWithLabel("string", new AxLookupBoxBinding(builder.getFormModel(), "item", "string", new AxTableDataProvider(TestItem.class) {
-            @Override
-            public List getList(Object criteria) {
-                return TestItem.itemsList;
-            }
-        }));
-        builder.addRowGap();
-        builder.addPropertyWithLabel("date");
-        builder.addRowGap();
-        builder.addPropertyWithLabel("localDate");
-        builder.addRowGap();
-        builder.addPropertyWithLabel("string");
-        builder.addRowGap();
-        builder.addPropertyWithLabel("numberInteger");
-        builder.addRowGap();
-        builder.addPropertyWithLabel("numberDecimal");
-        builder.addRowGap();
-        builder.addPropertyWithLabel("enumera");
+        builder.addBinding(tableBind, new CellConstraints(5, 1, 3, 13));
+
     }
 
 }

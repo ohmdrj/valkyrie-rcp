@@ -1,5 +1,7 @@
 package cz.req.ax.components;
 
+import cz.thickset.utils.Multicaster;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -15,6 +17,7 @@ public class AbstractBoxedField<T extends Component> extends JPanel {
 
     T component;
     JButton button;
+    Multicaster<PropertyChangeListener> multicaster;
 
     public AbstractBoxedField(T component) {
         super(new BorderLayout(0, 0));
@@ -24,9 +27,10 @@ public class AbstractBoxedField<T extends Component> extends JPanel {
         component.setMinimumSize(new Dimension(component.getMinimumSize().width, component.getMinimumSize().height + add));
         component.setPreferredSize(new Dimension(component.getPreferredSize().height, component.getPreferredSize().height + add));
 
+        this.multicaster = new Multicaster<PropertyChangeListener>();
         this.button = new JButton();
 //        button.setIcon(UIManager.getIcon("LookupBox.arrowIcon"));
-        button.setIcon(UIManager.getIcon(getClass().getSimpleName()+".arrowIcon"));
+        button.setIcon(UIManager.getIcon(getClass().getSimpleName() + ".arrowIcon"));
         button.setMinimumSize(new Dimension(26, component.getMinimumSize().height + add));
         button.setPreferredSize(new Dimension(26, component.getPreferredSize().height + add));
         add(component, BorderLayout.CENTER);
@@ -57,5 +61,15 @@ public class AbstractBoxedField<T extends Component> extends JPanel {
         button.removeActionListener(l);
     }
 
+    public Multicaster<PropertyChangeListener> getChangeMulticaster() {
+        return multicaster;
+    }
 
+    public void addChangeListener(PropertyChangeListener listener) {
+        multicaster.addListener(listener);
+    }
+
+    public void removeChangeListener(PropertyChangeListener listener) {
+        multicaster.removeListener(listener);
+    }
 }

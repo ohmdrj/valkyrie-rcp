@@ -65,6 +65,11 @@ public class AxFormBuilder extends AbstractFormBuilder {
         setStandardSpecs("p,200px", "p");
     }
 
+    public void setStandardPreset2() {
+        setStandardSpecs("p,200px, p,200px", "p");
+        this.autospan = false;
+    }
+
     public void setStandardSpecs(String specCol, String specRow, boolean autospan) {
         this.autospan = autospan;
         setStandardSpecs(specCol, specRow);
