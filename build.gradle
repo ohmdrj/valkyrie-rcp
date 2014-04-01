@@ -13,10 +13,41 @@ allprojects {
     sourceCompatibility = 1.6
 
     repositories {
-        maven {
-            url "file://${rootDir}/dependencies"
-        }
         mavenLocal()
+        maven {
+            url "http://dev.x/nexus/content/groups/public"
+            credentials {
+                username nexusUser
+                password nexusPass
+            }
+        }
+    }
+
+    /*publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url "http://dev.x/nexus/content/repositories/releases"
+                credentials {
+                    username nexusUser
+                    password nexusPass
+                }
+            }
+        }
+    }*/
+
+    uploadArchives {
+        repositories.mavenDeployer {
+            uniqueVersion = false
+            repository(url: "http://dev.x/nexus/content/repositories/releases") {
+                authentication(userName: nexusUser, password: nexusPass)
+            }
+            snapshotRepository(url: "file://$uhome/.m2/repository")
+        }
     }
 
     configurations {
